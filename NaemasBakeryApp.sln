@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Dokumentation", "Sys
 		SD - UC1.mmd = SD - UC1.mmd
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMSUI", "OMSUI\OMSUI.csproj", "{2327A796-CF7F-4B5E-9444-277EAFCC74EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMSLibrary.Tests", "OMSLibrary.Tests\OMSLibrary.Tests.csproj", "{61098C30-076E-4614-88C3-9659DE6667C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18A3697C-5A95-4CCF-8FF0-6F3F08B5102D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2327A796-CF7F-4B5E-9444-277EAFCC74EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2327A796-CF7F-4B5E-9444-277EAFCC74EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2327A796-CF7F-4B5E-9444-277EAFCC74EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2327A796-CF7F-4B5E-9444-277EAFCC74EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61098C30-076E-4614-88C3-9659DE6667C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61098C30-076E-4614-88C3-9659DE6667C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61098C30-076E-4614-88C3-9659DE6667C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61098C30-076E-4614-88C3-9659DE6667C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
