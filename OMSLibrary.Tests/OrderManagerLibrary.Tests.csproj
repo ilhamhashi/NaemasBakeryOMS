@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OMSLibrary\OMSLibrary.csproj" />
+    <ProjectReference Include="..\OMSLibrary\OrderManagerLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

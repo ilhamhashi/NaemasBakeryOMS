@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OMSDesktopUI.ViewModel
 {
-    internal class NewOrderViewModel
+    public class NewOrderViewModel
     {
     }
 }
