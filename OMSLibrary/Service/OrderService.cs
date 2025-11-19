@@ -1,4 +1,6 @@
-﻿using OMSDesktopUI.Model;
+﻿using OrderManagerLibrary.Model.Classes;
+using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Model.Repositories;
 using System.Data;
 
 namespace OMSDesktopUI.Services;
@@ -13,8 +15,8 @@ public class OrderService
     public OrderService(IDbConnection connection, IRepository<Order> orderRepository, IRepository<OrderLine> orderLineRepository)
     {
         _connection = connection;
-        _orderRepository = new OrderRepository(connection);
-        _orderLineRepository = new OrderLineRepository(connection);
+        _orderRepository = orderRepository;
+        _orderLineRepository = orderLineRepository;
     }
 
     public void CreateOrder(Order order, List<OrderLine> orderLines)
@@ -30,7 +32,7 @@ public class OrderService
                 foreach (var line in orderLines)
                 {
                     line.OrderId = order.OrderId; // Sæt OrderId for ordrelinjen
-                    _orderItemRepository.Add(line);
+                    _orderLineRepository.Add(line);
                 }
 
                 // Commit transaction
@@ -44,6 +46,4 @@ public class OrderService
             }
         }
     }
-
-    */
 }

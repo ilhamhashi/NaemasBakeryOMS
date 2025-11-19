@@ -1,4 +1,6 @@
-﻿namespace OrderManagerLibrary.Model.Classes;
+﻿using OrderManagerLibrary.Model.Interfaces;
+
+namespace OrderManagerLibrary.Model.Classes;
 public class Order : IOrder
 {
     public int OrderId { get; set; }
