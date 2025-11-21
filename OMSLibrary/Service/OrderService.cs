@@ -10,9 +10,9 @@ public class OrderService
     private readonly IRepository<OrderLine> _orderLineRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly IRepository<ICollectionType> _collectionRepository;
-    private readonly IRepository<Note> _noteRepository;
+    private readonly IRepository<INote> _noteRepository;
 
-    public OrderService(IDbConnection connection, IRepository<Order> orderRepository, IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository, IRepository<ICollectionType> collectionRepository, IRepository<Note> noteRepository)
+    public OrderService(IDbConnection connection, IRepository<Order> orderRepository, IRepository<OrderLine> orderLineRepository, IRepository<Payment> paymentRepository, IRepository<ICollectionType> collectionRepository, IRepository<INote> noteRepository)
     {
         _connection = connection;
         _orderRepository = orderRepository;
@@ -48,9 +48,6 @@ public class OrderService
                     i++;                                 
                 }
 
-                // opdater orderstatus afhængig af betaling
-
-
                 collection.OrderId = order.OrderId;
                 _collectionRepository.Insert(collection);
 
@@ -69,6 +66,3 @@ public class OrderService
         }
     }
 }
-
-//sæt ordrestatus (draft??)
-//

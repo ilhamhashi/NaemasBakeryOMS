@@ -13,10 +13,10 @@ public class NewOrderViewModel : ViewModelBase
     private readonly OrderService _orderservice;
 
     private Product? selectedProduct;
-	private INote? orderNote;
 	private ICustomer selectedCustomer;
 	private IPaymentMethod? selectedPaymentMethod;
-    private OrderStatus orderStatus;    
+    private OrderStatus orderStatus;
+    private string noteText;
     private DateTime collectionDateTime;
     private string collectionNeighborhood;    
     private decimal paymentAmount;	
@@ -56,11 +56,6 @@ public class NewOrderViewModel : ViewModelBase
         get { return selectedProduct; }
         set { selectedProduct = value; }
     }
-    public INote? OrderNote
-    {
-        get { return orderNote; }
-        set { orderNote = value; }
-    }
      public ICustomer SelectedCustomer
     {
         get { return selectedCustomer; }
@@ -75,6 +70,11 @@ public class NewOrderViewModel : ViewModelBase
     {
         get { return orderStatus; }
         set { orderStatus = value; }
+    }
+    public string NoteText
+    {
+        get { return noteText; }
+        set { noteText = value; }
     }
     public DateTime CollectionDateTime
     {
@@ -120,36 +120,52 @@ public class NewOrderViewModel : ViewModelBase
     private void AddNewOrder()
     {
         Order newOrder = new(DateTime.Now, OrderStatus.Draft, selectedCustomer.CustomerId);
+        if (outstandingAmount == 0)
+        {
+            newOrder.Status = OrderStatus.Confirmed;
+        }
         ICollectionType collection = HandleCollectionType();
-        _orderservice.CreateOrder(newOrder, _orderLines, _paymentMethods, _payments, collection, OrderNote);
+        INote orderNote = new Note(NoteText);
+        _orderservice.CreateOrder(newOrder, _orderLines, _paymentMethods, _payments, collection, orderNote);
 
         MessageBox.Show($"Order {newOrder.OrderId} has been saved succesfully");
+
+        //Nulstil felter
     }
 
     private void AddToOrder()
     {
         // Create a new OrderLine
         OrderLine newOrderLine = new(SelectedProduct.ProductId, SelectedQuantity, SelectedProduct.Price);
-
+        newOrderLine.ReducePrice();
         // Add the new OrderLine to the collection
         _orderLines.Add(newOrderLine);
         OrderLines?.Add(newOrderLine);
 
         // Update the OrderTotal
         OrderTotal = (_orderLines.Sum(ol => ol.Price * ol.Quantity));
+
+        // Nulstil felter
+        SelectedProduct = null;
+        SelectedQuantity = 1;
     }
 
     private void AddPaymentToOrder()
     {
         // Create a new Payment
-        Payment newPayment = new(SelectedPaymentMethod.PaymentMethodId, PaymentAmount);
+        Payment newPayment = new(PaymentAmount, DateTime.Now, SelectedPaymentMethod.PaymentMethodId);
 
-        // Add the new Payment to the collection
+        // Add the new Payment to the list
         _payments.Add(newPayment);
+        _paymentMethods.Add(SelectedPaymentMethod);
 
         // Update the OutstandingAmount
         decimal totalPaid = _payments.Sum(p => p.PaymentAmount);
         OutstandingAmount = (OrderTotal ?? 0) - totalPaid;
+
+        //Nulstil felter
+        SelectedPaymentMethod = null;
+        PaymentAmount = decimal.Zero;
     }
 
     private ICollectionType HandleCollectionType()
@@ -167,9 +183,5 @@ public class NewOrderViewModel : ViewModelBase
             return pickUp;
         }
     }
-
-
-
-
 
 }

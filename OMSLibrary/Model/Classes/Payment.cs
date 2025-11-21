@@ -7,9 +7,10 @@ public class Payment
     public int OrderId { get; set; }
     public int PaymentMethodId { get; set; }
 
-    public Payment(int paymentMethodId, decimal paymentAmount)
+    public Payment(decimal paymentAmount, DateTime paymentDate, int paymentMethodId)
     {
-        PaymentMethodId = paymentMethodId;
         PaymentAmount = paymentAmount;
+        PaymentDate = paymentDate;
+        PaymentMethodId = paymentMethodId;
     }
 }
