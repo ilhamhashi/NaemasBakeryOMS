@@ -14,8 +14,9 @@ public class NewOrderViewModel
 	private INote? orderNote;
 	private ICustomer? selectedCustomer;
 	private ICollectionType? collection;
-	private IPaymentMethod? selectedPaymentMethod;    
-	private decimal paymentAmount;	
+	private IPaymentMethod? selectedPaymentMethod;
+    private OrderStatus orderStatus;    
+    private decimal paymentAmount;	
 	private int? selectedQuantity;
 	private bool isDelivery;    
 	private decimal? orderTotal;
@@ -71,8 +72,14 @@ public class NewOrderViewModel
 	{
 		get { return selectedPaymentMethod; }
 		set { selectedPaymentMethod = value; }
-	}	
-	public decimal PaymentAmount
+	}
+    public OrderStatus OrderStatus
+    {
+        get { return orderStatus; }
+        set { orderStatus = value; }
+    }
+
+    public decimal PaymentAmount
 	{
 		get { return paymentAmount; }
 		set { paymentAmount = value; }
