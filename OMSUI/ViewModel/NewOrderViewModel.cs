@@ -2,6 +2,7 @@
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Service;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace OrderManagerLibrary.ViewModel;
 public class NewOrderViewModel
@@ -25,6 +26,21 @@ public class NewOrderViewModel
     private List<OrderLine> _orderLines { get; set; }
     public ObservableCollection<OrderLine>? OrderLines { get; set; }    
     public ObservableCollection<Product>? Products;
+
+    public ICommand CreateOrderCommand { get; set; }
+    public ICommand CancelOrderCommand { get; set; }
+    public ICommand ContinueToPaymentCommand { get; set; }
+    public ICommand GoBackToOrderDetailsCommand { get; set; }
+    public ICommand AddToOrderCommand { get; set; }
+    public ICommand SelectProductCommand { get; set; }
+
+    private bool CanCreateOrder() => true; // Placeholder for actual logic
+    private bool CanCancelOrder() => true; // Placeholder for actual logic
+    private bool CanContinueToPayment() => true; // Placeholder for actual logic
+    private bool CanGoBackToOrderDetails() => true; // Placeholder for actual logic
+    private bool CanAddToOrder() => true; // Placeholder for actual logic
+    private bool CanSelectProduct() => true; // Placeholder for actual logic
+
 
     public Product? SelectedProduct
     {
