@@ -1,5 +1,6 @@
 ﻿using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Model.Repositories;
 using System.Data;
 
 namespace OrderManagerLibrary.Service;
@@ -25,19 +26,19 @@ public class OrderService
     public void CreateOrder(Order order, List<OrderLine> orderLines, List<IPaymentMethod> paymentMethods, 
         List<Payment> payments, ICollectionType collection, INote note)
     {
-        using (var transaction = _connection.BeginTransaction())
+        using (var transaction = _orderRepository.Connection.BeginTransaction())
         {
             try
             {
                 int i = 0;
                 // Opret ordre
-                _orderRepository.Insert(order);
+                _orderRepository.Add(order);
 
                 // Opret ordrelinjer
                 foreach (var line in orderLines)
                 {
                     line.OrderId = order.OrderId; // Sæt OrderId for ordrelinjen
-                    _orderLineRepository.Insert(line);
+                    _orderLineRepository.Add(line);
                 }
 
                 foreach (var payment in payments)
