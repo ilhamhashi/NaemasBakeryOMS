@@ -4,9 +4,93 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OrderManagerDesktopUI.View"
+        xmlns:vm="clr-namespace:OrderManagerDesktopUI.ViewModel"
         mc:Ignorable="d"
         Title="View1" Height="450" Width="800">
+<!--
+    <Window.DataContext>
+        <vm:NewOrderViewModel/>
+    </Window.DataContext>
+    -->
+
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Implement Grid/List buttons -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0 0 20 0">
+            <TextBlock Text="Grid"
+                       FontSize="20"
+                       Margin="10"/>
+
+            <TextBlock Text="List"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Margin="10"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1"
+                  Height="350"
+                  VerticalAlignment="Bottom"
+                  ItemsSource="{Binding Products}"
+                  Margin="0 0 0 20"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False">
+            <DataGrid.Columns>
+                <!-- Product ID -->
+                <DataGridTextColumn Header="Nr."
+                                    Binding="{Binding ProductID, 
+                                    UpdateSourceTrigger=PropertyChanged}"
+                                    Width="100"/>
+
+                <!-- Product Name -->
+                <DataGridTextColumn Header="Magac"
+                                    Binding="{Binding ProductName, 
+                                    UpdateSourceTrigger=PropertyChanged}"
+                                    Width="250"/>
+
+                <!-- Product Size -->
+                <DataGridComboBoxColumn Header="Cabbir"                                        
+                                        ItemsSource="{Binding Source={StaticResource Sizes}}"
+                                        SelectedValueBinding="{Binding SizeId}"
+                                        SelectedValuePath="SizeId"
+                                        DisplayMemberPath="Name"
+                                        Width="100"/>
+
+                <!-- Flavour -->
+                <DataGridComboBoxColumn Header="Dhadhan"                                        
+                                        ItemsSource="{Binding Source={StaticResource Flavours}}"
+                                        SelectedValueBinding="{Binding FlavourId}"
+                                        SelectedValuePath="FlavourId"
+                                        DisplayMemberPath="Name"
+                                        Width="100"/>
+
+                <!-- Quantity -->
+                <DataGridTextColumn Header="Tiro"
+                    Binding="{Binding Quantity, 
+                    UpdateSourceTrigger=PropertyChanged}"
+                    Width="70"/>
+
+                <!-- Add Button -->
+                <DataGridTemplateColumn Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Ku dar"
+                                    Command="{Binding AddToOrderCommand}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

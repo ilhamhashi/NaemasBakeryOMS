@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace OrderManagerLibrary.ViewModel;
+namespace OrderManagerDesktopUI.ViewModel;
 public class NewOrderViewModel : ViewModelBase
 {
     private readonly OrderService _orderservice;

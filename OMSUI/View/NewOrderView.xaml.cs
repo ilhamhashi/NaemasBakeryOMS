@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using OrderManagerDesktopUI.ViewModel;
+using System.Windows;
 
 namespace OrderManagerDesktopUI.View;
 
