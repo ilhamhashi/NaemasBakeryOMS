@@ -22,8 +22,8 @@ public class OrderService
         _noteRepository = noteRepository;
     }
 
-    public void CreateOrder(Order order, List<OrderLine> orderLines, List<IPaymentMethod>? paymentMethods, 
-        List<Payment>? payments, ICollectionType collection, INote? note)
+    public void CreateOrder(Order order, List<OrderLine> orderLines, List<IPaymentMethod> paymentMethods, 
+        List<Payment> payments, ICollectionType collection, INote? note)
     {
         using (var transaction = _connection.BeginTransaction())
         {
@@ -45,7 +45,7 @@ public class OrderService
                     payment.OrderId = order.OrderId;
                     payment.PaymentMethodId = paymentMethods[i].PaymentMethodId;
                     _paymentRepository.Insert(payment);
-                    i++;                                 
+                    i++;
                 }
 
                 collection.OrderId = order.OrderId;

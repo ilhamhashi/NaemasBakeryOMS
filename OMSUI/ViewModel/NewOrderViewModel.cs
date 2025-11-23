@@ -4,7 +4,6 @@ using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Service;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace OrderManagerLibrary.ViewModel;
@@ -34,7 +33,7 @@ public class NewOrderViewModel : ViewModelBase
 
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
-    public ICommand AddToOrderCommand => new RelayCommand(execute => AddToOrder(), canExecute => CanAddToOrder());
+    public ICommand AddToOrderCommand => new RelayCommand(execute => AddProductToOrder(), canExecute => CanAddToOrder());
 
     // Navigation Commands - to be implemented
     //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
@@ -133,7 +132,7 @@ public class NewOrderViewModel : ViewModelBase
         //Nulstil felter
     }
 
-    private void AddToOrder()
+    private void AddProductToOrder()
     {
         // Create a new OrderLine
         OrderLine newOrderLine = new(SelectedProduct.ProductId, SelectedQuantity, SelectedProduct.Price);
