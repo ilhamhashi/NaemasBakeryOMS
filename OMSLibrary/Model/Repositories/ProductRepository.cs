@@ -4,34 +4,34 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
-public class PickUpRepository : IRepository<PickUp>
+public class ProductRepository : IRepository<Product>
 {
     private readonly SqlConnection _connection;
 
-    public PickUpRepository(ISqlDataAccess sqlDataAccess)
+    public ProductRepository(ISqlDataAccess sqlDataAccess)
     {
         _connection = sqlDataAccess.GetSqlConnection();
     }
-    public int Insert(PickUp entity)
-    {
-        throw new NotImplementedException();
-    }
-    public void Update(PickUp entity)
+    public int Insert(Product entity)
     {
         throw new NotImplementedException();
     }
 
+    public void Update(Product entity)
+    {
+        throw new NotImplementedException();
+    }
     public void Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<PickUp> GetAll()
+    public IEnumerable<Product> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public PickUp GetById(int id)
+    public Product GetById(int id)
     {
         throw new NotImplementedException();
     }

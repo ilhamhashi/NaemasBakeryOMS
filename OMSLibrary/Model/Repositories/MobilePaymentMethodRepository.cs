@@ -4,34 +4,34 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Repositories;
-public class PickUpRepository : IRepository<PickUp>
+public class MobilePaymentMethodRepository : IRepository<MobilePaymentMethod>
 {
     private readonly SqlConnection _connection;
 
-    public PickUpRepository(ISqlDataAccess sqlDataAccess)
+    public MobilePaymentMethodRepository(ISqlDataAccess sqlDataAccess)
     {
         _connection = sqlDataAccess.GetSqlConnection();
-    }
-    public int Insert(PickUp entity)
-    {
-        throw new NotImplementedException();
-    }
-    public void Update(PickUp entity)
+    }   
+    public int Insert(MobilePaymentMethod entity)
     {
         throw new NotImplementedException();
     }
 
+    public void Update(MobilePaymentMethod entity)
+    {
+        throw new NotImplementedException();
+    }
     public void Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<PickUp> GetAll()
+    public IEnumerable<MobilePaymentMethod> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public PickUp GetById(int id)
+    public MobilePaymentMethod GetById(int id)
     {
         throw new NotImplementedException();
     }
