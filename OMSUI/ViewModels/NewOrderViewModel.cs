@@ -12,34 +12,38 @@ public class NewOrderViewModel : ViewModelBase
     private readonly OrderService _orderservice;
 
     private Product? selectedProduct;
-	private ICustomer selectedCustomer;
-	private IPaymentMethod? selectedPaymentMethod;
+    private ICustomer selectedCustomer;
+    private IPaymentMethod? selectedPaymentMethod;
     private OrderStatus orderStatus;
     private string noteText;
     private DateTime collectionDateTime;
-    private string collectionNeighborhood;    
-    private decimal paymentAmount;	
-	private int selectedQuantity;
-	private bool isDelivery;    
-	private decimal? orderTotal;
-	private decimal outstandingAmount;
+    private string collectionNeighborhood;
+    private decimal paymentAmount;
+    private int selectedQuantity;
+    private bool isDelivery;
+    private decimal? orderTotal;
+    private decimal outstandingAmount;
 
 
-    private List<IPaymentMethod>? _paymentMethods {  get; set; } = [];
+    private List<IPaymentMethod>? _paymentMethods { get; set; } = [];
     private List<Payment>? _payments { get; set; } = [];
     private List<OrderLine> _orderLines { get; set; }
-    public ObservableCollection<OrderLine>? OrderLines { get; set; }    
+    public ObservableCollection<OrderLine>? OrderLines { get; set; }
+    public ObservableCollection<IPaymentMethod>? PaymentMethods { get; set; }
     public ObservableCollection<Product>? Products;
 
     public ICommand CreateOrderCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
     public ICommand AddPaymentCommand => new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
     public ICommand AddToOrderCommand => new RelayCommand(execute => AddProductToOrder(), canExecute => CanAddToOrder());
+    public ICommand FindCustomerCommand => new RelayCommand(execute => { /* To be implemented */ }, canExecute => true);
+    public ICommand CreateNewCustomerCommand = new RelayCommand(execute => {/* To be implemented */ }, canExecute => true);
+    public ICommand CancelPaymentCommand => new RelayCommand(execute => { /* To be implemented */ }, canExecute => true);
 
     // Navigation Commands - to be implemented
-    //public ICommand CancelNewOrderCommand => new RelayCommand(execute => CancelNewOrder(), canExecute => CanCancelNewOrder());
-    //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
-    //public ICommand GoBackToOrderDetailsCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
-    //public ICommand SelectProductCommand => new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
+    public ICommand CancelNewOrderCommand => new RelayCommand(execute => { /* To be implemented */ }, canExecute => CanCancelNewOrder());
+    //public ICommand ContinueToPaymentCommand => new RelayCommand(execute => { /* To be implemented */ }, canExecute => CanAddNewOrder());
+    public ICommand GoBackToOrderDetailsCommand => new RelayCommand(execute => { /* To be implemented */ }, canExecute => CanAddNewOrder());
+    //public ICommand SelectProductCommand => new RelayCommand(execute => { /* To be implemented */ }, canExecute => CanAddNewOrder());
 
     private bool CanAddNewOrder() => true; // Placeholder for actual logic
     private bool CanCancelNewOrder() => true; // Placeholder for actual logic
