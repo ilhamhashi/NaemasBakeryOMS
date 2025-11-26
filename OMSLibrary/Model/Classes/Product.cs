@@ -13,4 +13,11 @@ public class Product
         Description = description;
         Price = price;
     }
+
+    public Product(string name, string description, decimal price)
+    {
+        Name = name;
+        Description = description;
+        Price = price;
+    }
 }

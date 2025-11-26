@@ -14,7 +14,7 @@ public class OrderRepository : IRepository<Order>
         _connection = sqlDataAccess.GetSqlConnection();
     }
 
-    public int? Insert(Order entity)
+    public int Insert(Order entity)
     {
         using SqlCommand command = new SqlCommand("spOrder_Insert", _connection);
         command.CommandType = CommandType.StoredProcedure;
@@ -43,11 +43,11 @@ public class OrderRepository : IRepository<Order>
         command.ExecuteNonQuery();
     }
 
-    public void Delete(int id)
+    public void Delete(params object[] keyValues)
     {
         using SqlCommand command = new SqlCommand("spOrder_Delete", _connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.AddWithValue("@OrderId", id);
+        command.Parameters.AddWithValue("@OrderId", keyValues[0]);
         _connection.Open();
         command.ExecuteNonQuery();
     }

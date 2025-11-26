@@ -67,7 +67,7 @@ public class OrderLineRepository : IRepository<OrderLine>
         return orderLine;
     }
 
-    public int? Insert(OrderLine entity)
+    public int Insert(OrderLine entity)
     {
         using SqlCommand command = new SqlCommand("spOrderLine_Insert", _connection);
         command.CommandType = CommandType.StoredProcedure;

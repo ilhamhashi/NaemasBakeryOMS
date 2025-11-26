@@ -63,7 +63,7 @@ public class ProductRepository : IRepository<Product>
         return product;
     }
 
-    public int? Insert(Product entity)
+    public int Insert(Product entity)
     {
         using SqlCommand command = new SqlCommand("spProduct_Insert", _connection);
         command.CommandType = CommandType.StoredProcedure;

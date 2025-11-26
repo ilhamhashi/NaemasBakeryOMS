@@ -26,19 +26,20 @@ public sealed class ProductRepositoryTests
         // Arrange
         var product = new Product
         (
-            DateTime.Now,
-            OrderStatus.Confirmed,
-            1
+            "Product Name",
+            "Product Description",
+            10
         );
 
         // Act
-        product.OrderId = _productRepository.Insert(product);
+        product.ProductId = _productRepository.Insert(product);
 
         // Assert
-        var retrievedProduct = _productRepository.GetById(product.OrderId);
+        var retrievedProduct = _productRepository.GetById(product.ProductId);
         Assert.IsNotNull(retrievedProduct);
-        Assert.AreEqual(product.CustomerId, retrievedProduct.CustomerId);
-        Assert.AreEqual(product.Status, retrievedProduct.Status);
+        Assert.AreEqual(product.Name, retrievedProduct.Name);
+        Assert.AreEqual(product.Description, retrievedProduct.Description);
+        Assert.AreEqual(product.Price, retrievedProduct.Price);
     }
 
     [TestMethod]
