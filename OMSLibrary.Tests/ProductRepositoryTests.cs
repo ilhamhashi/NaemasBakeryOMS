@@ -15,7 +15,7 @@ public sealed class ProductRepositoryTests
     [TestInitialize]
     public void Setup()
     {
-        _config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+        _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         _db = new DataAccess(_config);
         _productRepository = new ProductRepository(_db);
     }
