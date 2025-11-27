@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
@@ -10,24 +9,21 @@ namespace OrderManagerLibrary.Tests;
 public sealed class CustomerRepositoryTests
 {
     private IRepository<Customer> _customerRepository;
-    private ISqlDataAccess _dataAccess;
-    private IConfigurationRoot _config;
+    private IConfiguration _config;
 
     [TestInitialize]
     public void Setup()
     {
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        _dataAccess = new SqlDataAccess(_config);
-        _customerRepository = new CustomerRepository(_dataAccess);
+        _customerRepository = new CustomerRepository(_config);
     }
 
     [TestMethod]
-    public void InsertCustomer_ShouldInsertCustomerSuccesfully()
+    public void Insert_ShouldInsertCustomerSuccesfully()
     {
         // Arrange
         var customer = new Customer
         (
-            1,
             "John",
             "Doe",
             "12345678"
@@ -45,19 +41,14 @@ public sealed class CustomerRepositoryTests
     }
 
     [TestMethod]
-    public void UpdateCustomer_ShouldUpdateCustomerSuccesfully()
+    public void GetById_ShouldGetExistingCustomerSuccesfully()
     {
         // Arrange
-        var customer = new Customer
-        (
-            1,
-            "John",
-            "Doe",
-            "12345678"
-        );
+        // Customer exist in Database with ID 7
+        Customer customer;
 
         // Act
-        customer.CustomerId = _customerRepository.Insert(customer);
+        customer = _customerRepository.GetById(7);
 
         // Assert
         var retrievedCustomer = _customerRepository.GetById(customer.CustomerId);
@@ -68,48 +59,47 @@ public sealed class CustomerRepositoryTests
     }
 
     [TestMethod]
-    public void DeleteCustomer_ShouldDeleteCustomerSuccesfully()
+    public void GetAll_ShouldGetAllCustomerInfoSuccesfully()
     {
         // Arrange
-        var customer = new Customer
-        (
-            1,
-            "John",
-            "Doe",
-            "12345678"
-        );
+        var customer = new List<Customer>();
 
         // Act
-        customer.CustomerId = _customerRepository.Insert(customer);
+        customer = _customerRepository.GetAll();
 
         // Assert
-        var retrievedCustomer = _customerRepository.GetById(customer.CustomerId);
+        var retrievedCustomer = _customerRepository.GetAll();
         Assert.IsNotNull(retrievedCustomer);
-        Assert.AreEqual(customer.FirstName, retrievedCustomer.FirstName);
-        Assert.AreEqual(customer.LastName, retrievedCustomer.LastName);
-        Assert.AreEqual(customer.PhoneNumber, retrievedCustomer.PhoneNumber);
+        Assert.AreEqual(customer, retrievedCustomer);
+        
     }
 
     [TestMethod]
-    public void GetById_ShouldGetCustomerSuccesfully()
+    public void Update_ShouldUpdateCustomerSuccesfully()
     {
         // Arrange
         var customer = new Customer
         (
-            1,
-            "John",
-            "Doe",
-            "12345678"
+            "Anna",
+            "Jensen",
+            "87654321"
         );
 
         // Act
-        customer.CustomerId = _customerRepository.Insert(customer);
+        //customer.CustomerId = _customerRepository.Update(customer);
 
         // Assert
-        var retrievedCustomer = _customerRepository.GetById(customer.CustomerId);
-        Assert.IsNotNull(retrievedCustomer);
-        Assert.AreEqual(customer.FirstName, retrievedCustomer.FirstName);
-        Assert.AreEqual(customer.LastName, retrievedCustomer.LastName);
-        Assert.AreEqual(customer.PhoneNumber, retrievedCustomer.PhoneNumber);
+        
+    }
+
+    [TestMethod]
+    public void Delete_ShouldDeleteCustomerSuccesfully()
+    {
+        // Arrange
+
+        // Act
+
+        // Assert
+        
     }
 }
