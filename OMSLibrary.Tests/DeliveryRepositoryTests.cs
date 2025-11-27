@@ -7,7 +7,7 @@ using OrderManagerLibrary.Model.Repositories;
 namespace OrderManagerLibrary.Tests;
 
 [TestClass]
-public class DeliveryRepositoryTests
+public sealed class DeliveryRepositoryTests
 {
     private IRepository<Delivery> _deliveryRepository;
     private ISqlDataAccess _dataAccess;
