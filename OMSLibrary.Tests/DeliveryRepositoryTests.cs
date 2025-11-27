@@ -7,7 +7,7 @@ using OrderManagerLibrary.Model.Repositories;
 namespace OrderManagerLibrary.Tests;
 
 [TestClass]
-public class DeliveryRepositoryTests
+public sealed class DeliveryRepositoryTests
 {
     private IRepository<Delivery> _deliveryRepository;
     private ISqlDataAccess _dataAccess;
@@ -39,6 +39,7 @@ public class DeliveryRepositoryTests
         // Assert
         var retrievedDelivery = _deliveryRepository.GetById(delivery.CollectionId);
         Assert.IsNotNull(retrievedDelivery);
+        Assert.AreEqual(delivery.CollectionDate, retrievedDelivery.CollectionDate);
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
         Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
     }
@@ -61,6 +62,7 @@ public class DeliveryRepositoryTests
         // Assert
         var retrievedDelivery = _deliveryRepository.GetById(delivery.CollectionId);
         Assert.IsNotNull(retrievedDelivery);
+        Assert.AreEqual(delivery.CollectionDate, retrievedDelivery.CollectionDate);
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
         Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
     }
@@ -83,6 +85,7 @@ public class DeliveryRepositoryTests
         // Assert
         var retrievedDelivery = _deliveryRepository.GetById(delivery.CollectionId);
         Assert.IsNotNull(retrievedDelivery);
+        Assert.AreEqual(delivery.CollectionDate, retrievedDelivery.CollectionDate);
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
         Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
     }
@@ -105,6 +108,7 @@ public class DeliveryRepositoryTests
         // Assert
         var retrievedDelivery = _deliveryRepository.GetById(delivery.CollectionId);
         Assert.IsNotNull(retrievedDelivery);
+        Assert.AreEqual(delivery.CollectionDate, retrievedDelivery.CollectionDate);
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
         Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
     }
