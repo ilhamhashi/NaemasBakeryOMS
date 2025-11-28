@@ -39,7 +39,7 @@ public sealed class DeliveryRepositoryTests
     }
 
     [TestMethod]
-    public void UpdateDelivery_ShouldUpdateDeliverySuccesfully()
+    public void GetById_ShouldGetDeliverySuccesfully()
     {
         // Arrange
         var delivery = new Delivery(DateTime.Now, 2, "Downtown");
@@ -58,7 +58,7 @@ public sealed class DeliveryRepositoryTests
     }
 
     [TestMethod]
-    public void DeleteDelivery_ShouldDeleteDeliverySuccesfully()
+    public void GetAll_ShouldGetAllCustomerInfoSuccesfully()
     {
         // Arrange
         var delivery = new Delivery(DateTime.Now, 2, "Downtown");
@@ -73,7 +73,7 @@ public sealed class DeliveryRepositoryTests
     }
 
     [TestMethod]
-    public void GetById_ShouldGetDeliverySuccesfully()
+    public void UpdateDelivery_ShouldUpdateDeliverySuccesfully()
     {
         // Arrange
         var delivery = new Delivery(DateTime.Now, 2, "Downtown");
@@ -87,5 +87,19 @@ public sealed class DeliveryRepositoryTests
         Assert.AreEqual(delivery.CollectionDate.ToString(), retrievedDelivery.CollectionDate.ToString());
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
         Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
+    }
+
+    [TestMethod]
+    public void DeleteDelivery_ShouldDeleteDeliverySuccesfully()
+    {
+        // Arrange
+        var delivery = new Delivery(DateTime.Now, "Xgade");
+        int collectionId = _deliveryRepository.Insert(delivery);
+
+        // Act
+        _deliveryRepository.Delete(delivery);
+
+        // Assert
+        Assert.IsNull(_deliveryRepository.GetById(delivery));
     }
 }
