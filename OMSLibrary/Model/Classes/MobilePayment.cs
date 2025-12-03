@@ -1,6 +1,10 @@
 ﻿using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Classes;
+/// <summary>
+/// Represents a specific mobile payment method
+/// used to process payments for an order.
+/// </summary>
 public class MobilePayment : IPaymentMethod
 {
     public int PaymentMethodId { get; set; }

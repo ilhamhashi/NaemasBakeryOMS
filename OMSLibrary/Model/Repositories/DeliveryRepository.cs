@@ -5,15 +5,27 @@ using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
+
+/// <summary>
+/// Repository responsible for handling all database operations related to Delivery.
+/// Implements CRUD functionality using stored procedures.
+/// </summary>
 public class DeliveryRepository : IRepository<Delivery>
 {
     private readonly IDataAccess _db;
 
+    /// <summary>
+    /// Initializes the repository with a database connection provider.
+    /// </summary>
     public DeliveryRepository(IDataAccess db)
     {
         _db = db;
     }
 
+    /// <summary>
+    /// Inserts a new delivery record into the database.
+    /// Returns the generated CollectionId.
+    /// </summary>
     public int Insert(Delivery entity)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -33,7 +45,9 @@ public class DeliveryRepository : IRepository<Delivery>
             return (int)outputParam.Value;
         }
     }
-
+    /// <summary>
+    /// Updates an existing delivery entry in the database.
+    /// </summary>
     public void Update(Delivery entity)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -48,7 +62,9 @@ public class DeliveryRepository : IRepository<Delivery>
             command.ExecuteNonQuery();
         }
     }
-
+    /// <summary>
+    /// Deletes a delivery record using its CollectionId.
+    /// </summary>
     public void Delete(params object[] keyValues)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -60,6 +76,10 @@ public class DeliveryRepository : IRepository<Delivery>
             command.ExecuteNonQuery();
         }
     }
+    /// <summary>
+    /// Retrieves a delivery by its CollectionId.
+    /// Returns null if not found.
+    /// </summary>
     public Delivery GetById(params object[] keyValues)
     {
         Delivery delivery = null;
@@ -83,7 +103,9 @@ public class DeliveryRepository : IRepository<Delivery>
         }
         return delivery;
     }
-
+    /// <summary>
+    /// Retrieves all deliveries stored in the database.
+    /// </summary>
     public IEnumerable<Delivery> GetAll()
     {
         var deliveries = new List<Delivery>();
