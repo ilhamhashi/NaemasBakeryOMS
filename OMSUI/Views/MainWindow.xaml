@@ -75,62 +75,63 @@
 
                     <!--Menu Items-->
 
-                    <Button Style="{StaticResource menuButton}"
-                                 Command="{Binding NavigateToHomeCommand}">
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Command="{Binding NavigateToHomeCommand}"
+                                 IsChecked="True">
                         <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="Home" Style="{StaticResource menuButtonIcon}"/>
+                            <Icon:PackIconMaterial Kind="InvoiceTextPlusOutline" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Dashboard" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
-                    <Button Style="{StaticResource menuButton}"
+                    <RadioButton Style="{StaticResource menuButton}"
                             Command="{Binding NavigateToNewOrderCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="InvoiceTextPlusOutline" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="New Order" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
-                    <Button Style="{StaticResource menuButton}"
+                    <RadioButton Style="{StaticResource menuButton}"
                             Command="{Binding NavigateToOrdersCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="InvoiceMultipleOutline" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Orders" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
-                    <Button Style="{StaticResource menuButton}"
+                    <RadioButton Style="{StaticResource menuButton}"
                             Command="{Binding NavigateToCustomersCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="AccountGroupOutline" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Customers" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
-                    <Button Style="{StaticResource menuButton}"
+                    <RadioButton Style="{StaticResource menuButton}"
                             Command="{Binding NavigateToProductsCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="PackageVariant" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Products" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
-                    <Button Style="{StaticResource menuButton}"
+                    <RadioButton Style="{StaticResource menuButton}"
                             Command="{Binding NavigateToSalesDataCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="ChartLine" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Sales" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
                     <TextBlock Text="Help" Style="{StaticResource menuTitle}"/>
 
-                    <Button Style="{StaticResource menuButton}">
+                    <RadioButton Style="{StaticResource menuButton}">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="CogOutline" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
 
                 </StackPanel>
             </Border>
