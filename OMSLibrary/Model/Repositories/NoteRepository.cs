@@ -5,14 +5,27 @@ using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
+
+/// <summary>
+/// Manages Note records in the database (add, update, delete, get).
+/// </summary>
+
 public class NoteRepository : IRepository<Note>
 {
     private readonly IDataAccess _db;
+
+    /// <summary>
+    /// Creates a new NoteRepository with a database connection.
+    /// </summary>
 
     public NoteRepository(IDataAccess db)
     {
         _db = db;
     }
+
+    /// <summary>
+    /// Adds a new Note to the database and returns its generated NoteId.
+    /// </summary>
 
     public int Insert(Note entity)
     {
@@ -33,6 +46,10 @@ public class NoteRepository : IRepository<Note>
         }
     }
 
+    /// <summary>
+    /// Updates an existing Note in the database.
+    /// </summary>
+
     public void Update(Note entity)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -46,6 +63,11 @@ public class NoteRepository : IRepository<Note>
             command.ExecuteNonQuery();
         }
     }
+
+    /// <summary>
+    /// Deletes a Note from the database using its NoteId.
+    /// </summary>
+
     public void Delete(params object[] keyValues)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -57,7 +79,9 @@ public class NoteRepository : IRepository<Note>
             command.ExecuteNonQuery();
         }
     }
-
+    /// <summary>
+    /// Finds a Note by NoteId. Returns null if not found.
+    /// </summary>
     public Note GetById(params object[] keyValues)
     {
         Note note = null;
@@ -82,6 +106,9 @@ public class NoteRepository : IRepository<Note>
             return note;
         }
     }
+    /// <summary>
+    /// Returns all Notes in the database.
+    /// </summary>
 
     public IEnumerable<Note> GetAll()
     {

@@ -5,14 +5,27 @@ using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
+/// <summary>
+/// Handles database operations for PickUp entities (add, update, delete, get).
+/// </summary>
 public class PickUpRepository : IRepository<PickUp>
 {
     private readonly IDataAccess _db;
+    /// <summary>
+    /// Creates a new PickUpRepository with a database connection.
+    /// </summary>
 
     public PickUpRepository(IDataAccess db)
     {
         _db = db;
     }
+    /// <summary>
+    /// Adds a new PickUp record to the database.
+    /// Returns the newly generated CollectionId.
+    /// </summary>
+    /// <param name="entity">The PickUp record to add.</param>
+    /// <returns>The ID of the new collection.</returns>
+
     public int Insert(PickUp entity)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -31,6 +44,9 @@ public class PickUpRepository : IRepository<PickUp>
             return (int)outputParam.Value;
         }
     }
+    /// <summary>
+    /// Updates an existing PickUp record in the database.
+    /// </summary>
 
     public void Update(PickUp entity)
     {
@@ -45,6 +61,9 @@ public class PickUpRepository : IRepository<PickUp>
             command.ExecuteNonQuery();
         }
     }
+    /// <summary>
+    /// Deletes a PickUp record from the database using CollectionId.
+    /// </summary>
 
     public void Delete(params object[] keyValues)
     {
@@ -57,7 +76,10 @@ public class PickUpRepository : IRepository<PickUp>
             command.ExecuteNonQuery();
         }
     }
-
+    /// <summary>
+    /// Retrieves a PickUp record by ID from the database.
+    /// Returns null if no match is found.
+    /// </summary>
     public PickUp GetById(params object[] keyValues)
     {
         PickUp pickUp = null;
@@ -79,8 +101,12 @@ public class PickUpRepository : IRepository<PickUp>
             }
         }
         return pickUp;
-    }    
-    
+    }
+
+    /// <summary>
+    /// Retrieves all PickUp records stored in the database.
+    /// </summary>
+
     public IEnumerable<PickUp> GetAll()
     {
         var pickUps = new List<PickUp>();

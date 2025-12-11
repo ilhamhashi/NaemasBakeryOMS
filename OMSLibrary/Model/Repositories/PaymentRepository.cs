@@ -7,14 +7,27 @@ using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
 
+/// <summary>
+/// Handles database operations for Payment entities (add, update, delete, get).
+/// </summary>
+
 public class PaymentRepository : IRepository<Payment>
 {
     private readonly IDataAccess _db;
+
+    /// <summary>
+    /// Creates a new PaymentRepository with a database connection.
+    /// </summary>
 
     public PaymentRepository(IDataAccess db)
     {
         _db = db;
     }
+
+    /// <summary>
+    /// Adds a new Payment record to the database.
+    /// Returns the newly generated PaymentId.
+    /// </summary>
 
     public int Insert(Payment entity)
     {
@@ -36,6 +49,9 @@ public class PaymentRepository : IRepository<Payment>
             return (int)outputParam.Value;
         }
     }
+    /// <summary>
+    /// Updates an existing Payment record in the database.
+    /// </summary>
 
     public void Update(Payment entity)
     {
@@ -53,6 +69,10 @@ public class PaymentRepository : IRepository<Payment>
         }
     }
 
+    /// <summary>
+    /// Deletes a Payment record from the database using PaymentId.
+    /// </summary>
+
     public void Delete(params object[] keyValues)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -64,6 +84,12 @@ public class PaymentRepository : IRepository<Payment>
             command.ExecuteNonQuery();
         }
     }
+
+    /// <summary>
+    /// Retrieves a Payment record by ID from the database.
+    /// Returns null if no match is found.
+    /// </summary>
+
     public Payment GetById(params object[] keyValues)
     {
         Payment payment = null;
@@ -81,14 +107,16 @@ public class PaymentRepository : IRepository<Payment>
                 payment = new Payment
                     ((int)reader["PaymentId"],
                     (decimal)reader["PaymentAmount"],
-                    (DateTime)reader["PaymentDate"], 
+                    (DateTime)reader["PaymentDate"],
                     (int)reader["OrderId"],
                     (int)reader["PaymentMethodId"]);
             }
             return payment;
         }
     }
-
+    /// <summary>
+    /// Retrieves all Payment records stored in the database.
+    /// </summary>
     public IEnumerable<Payment> GetAll()
     {
         var payments = new List<Payment>();

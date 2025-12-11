@@ -5,21 +5,32 @@ using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
+/// <summary>
+///  Manages OrderLine records in the database (add, update, delete, get).
+/// </summary>
 public class OrderLineRepository : IRepository<OrderLine>
 {
     private readonly IDataAccess _db;
+
+    /// <summary>
+    /// Creates a new OrderLineRepository with a database connection.
+    /// </summary>
 
     public OrderLineRepository(IDataAccess db)
     {
         _db = db;
     }
+
+    /// <summary>
+    /// Adds a new OrderLine to the database. Returns -1 because it has no single ID.
+    /// </summary>
     public int Insert(OrderLine entity)
     {
         using SqlConnection connection = _db.GetConnection();
         using (SqlCommand command = new SqlCommand("spOrderLine_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", entity.Product.Id);
+            command.Parameters.AddWithValue("@ProductId", entity.ProductId);
             command.Parameters.AddWithValue("@OrderId", entity.OrderId);
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
@@ -30,13 +41,16 @@ public class OrderLineRepository : IRepository<OrderLine>
             return -1;
         }
     }
+    /// <summary>
+    /// Updates an existing OrderLine in the database.
+    /// </summary>
     public void Update(OrderLine entity)
     {
         using SqlConnection connection = _db.GetConnection();
         using (SqlCommand command = new SqlCommand("spOrderLine_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", entity.Product.Id);
+            command.Parameters.AddWithValue("@ProductId", entity.ProductId);
             command.Parameters.AddWithValue("@OrderId", entity.OrderId);
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
@@ -47,6 +61,10 @@ public class OrderLineRepository : IRepository<OrderLine>
             command.ExecuteNonQuery();
         }
     }
+
+    /// <summary>
+    /// Deletes an OrderLine using its ProductId, OrderId, and LineNumber.
+    /// </summary>
 
     public void Delete(params object[] keyValues)
     {
@@ -62,7 +80,10 @@ public class OrderLineRepository : IRepository<OrderLine>
             command.ExecuteNonQuery();
         }
     }
-
+    /// <summary>
+    /// Finds an OrderLine using ProductId, OrderId, and LineNumber.
+    /// Returns null if not found.
+    /// </summary>
     public OrderLine GetById(params object[] keyValues)
     {
         OrderLine orderLine = null;
@@ -91,7 +112,9 @@ public class OrderLineRepository : IRepository<OrderLine>
             return orderLine;
         }
     }
-
+    /// <summary>
+    /// Returns all OrderLine records in the database.
+    /// </summary>
     public IEnumerable<OrderLine> GetAll()
     {
         var orderLines = new List<OrderLine>();

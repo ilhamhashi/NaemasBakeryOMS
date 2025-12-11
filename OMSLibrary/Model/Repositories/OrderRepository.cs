@@ -5,14 +5,24 @@ using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
+/// <summary>
+/// Manages Order records in the database (add, update, delete, get).
+/// </summary>
 public class OrderRepository : IRepository<Order>
 {
     private readonly IDataAccess _db;
+    /// <summary>
+    /// Creates a new OrderRepository with a database connection.
+    /// </summary>
 
     public OrderRepository(IDataAccess db)
     {
         _db = db;
     }
+
+    /// <summary>
+    /// Adds a new Order to the database and returns its generated OrderId.
+    /// </summary>
 
     public int Insert(Order entity)
     {
@@ -34,6 +44,10 @@ public class OrderRepository : IRepository<Order>
         }
     }
 
+    /// <summary>
+    /// Updates an existing Order in the database.
+    /// </summary>
+
     public void Update(Order entity)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -49,6 +63,11 @@ public class OrderRepository : IRepository<Order>
         }
     }
 
+
+    /// <summary>
+    /// Deletes an Order from the database using its OrderId.
+    /// </summary>
+
     public void Delete(params object[] keyValues)
     {
         using SqlConnection connection = _db.GetConnection();
@@ -60,6 +79,10 @@ public class OrderRepository : IRepository<Order>
             command.ExecuteNonQuery();
         }
     }
+
+    /// <summary>
+    /// Finds an Order by OrderId. Returns null if not found.
+    /// </summary>
     public Order GetById(params object[] keyValues)
     {
         Order order = null;
@@ -83,6 +106,10 @@ public class OrderRepository : IRepository<Order>
             return order;
         }
     }
+
+    /// <summary>
+    /// Returns all Orders in the database.
+    /// </summary>
 
     public IEnumerable<Order> GetAll()
     {

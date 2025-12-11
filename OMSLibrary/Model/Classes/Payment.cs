@@ -1,6 +1,12 @@
 ﻿namespace OrderManagerLibrary.Model.Classes;
+
+/// <summary>
+/// Represents a payment for an order, including the amount, date,
+/// and payment method.
+/// </summary>
 public class Payment
 {
+
     public int PaymentId { get; set; }
     public decimal PaymentAmount { get; set; }
     public DateTime PaymentDate { get; set; }
@@ -15,6 +21,7 @@ public class Payment
         OrderId = orderId;
         PaymentMethodId = paymentMethodId;
     }
+
 
     public Payment(decimal paymentAmount, DateTime paymentDate, int paymentMethodId)
     {
