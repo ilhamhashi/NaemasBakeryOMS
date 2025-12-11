@@ -27,34 +27,44 @@ public class OrderService : IOrderService
         _productRepository = productRepository;
     }
 
-    public void CreateOrder(Order order, List<OrderLine> orderLines,
-                            List<IPaymentMethod> paymentMethods, List<Payment> payments,
-                            ICollectionType collection, INote? note)
+    public IEnumerable<Product> ViewProductCatalogue()
+    {
+        return _productRepository.GetAll();
+    }
+    public IEnumerable<Order> GetUpcomingOrders()
+    {
+        return (_orderRepository as OrderRepository).GetUpcomingOrders();
+    }
+
+    public IEnumerable<Order> GetPendingPaymentOrders()
+    {
+        return (_orderRepository as OrderRepository).GetPendingPaymentOrders();
+    }
+
+    public void CreateOrder(Order order, List<OrderLine> orderLines, List<Payment> payments,
+                            IPickUp collection, INote? note)
     {
         using (var transaction = _db.GetConnection().BeginTransaction())
         {
             try
             {
-                int i = 0;
                 // Opret ordre
                 _orderRepository.Insert(order);
 
                 // Opret ordrelinjer
                 foreach (var line in orderLines)
                 {
-                    line.OrderId = order.OrderId; // Sæt OrderId for ordrelinjen
+                    line.OrderId = order.Id; // Sæt OrderId for ordrelinjen
                     _orderLineRepository.Insert(line);
                 }
 
                 foreach (var payment in payments)
                 {
-                    payment.OrderId = order.OrderId;
-                    payment.PaymentMethodId = paymentMethods[i].PaymentMethodId;
+                    payment.OrderId = order.Id;
                     _paymentRepository.Insert(payment);
-                    i++;
                 }
 
-                collection.OrderId = order.OrderId;
+                collection.OrderId = order.Id;
                 //_collectionRepository.Insert(collection);
 
                 note.OrderId = note.OrderId;
@@ -70,9 +80,5 @@ public class OrderService : IOrderService
                 throw; // Re-throw exception to handle it upstream
             }
         }
-    }
-    public IEnumerable<Product> ViewProductCatalogue()
-    {
-        return _productRepository.GetAll();
     }
 }

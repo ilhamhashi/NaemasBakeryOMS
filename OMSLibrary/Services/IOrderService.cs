@@ -5,7 +5,9 @@ namespace OrderManagerLibrary.Services
 {
     public interface IOrderService
     {
+        IEnumerable<Order> GetUpcomingOrders();
+        IEnumerable<Order> GetPendingPaymentOrders();
         IEnumerable<Product> ViewProductCatalogue();
-        void CreateOrder(Order order, List<OrderLine> orderLines, List<IPaymentMethod> paymentMethods, List<Payment> payments, ICollectionType collection, INote? note);
+        void CreateOrder(Order order, List<OrderLine> orderLines,List<Payment> payments, IPickUp collection, INote? note);
     }
 }

@@ -1,25 +1,31 @@
-﻿namespace OrderManagerLibrary.Model.Classes;
+﻿using OrderManagerLibrary.Model.Interfaces;
+
+namespace OrderManagerLibrary.Model.Classes;
 public class Payment
 {
-    public int PaymentId { get; set; }
-    public decimal PaymentAmount { get; set; }
-    public DateTime PaymentDate { get; set; }
+    public int Id { get; set; }
+    public DateTime Date { get; set; }
+    public decimal Amount { get; set; }
+    public IPaymentMethod PaymentMethod { get; set; }
+    public Order Order { get; set; }
+
     public int OrderId { get; set; }
     public int PaymentMethodId { get; set; }
 
-    public Payment(int paymentId, decimal paymentAmount, DateTime paymentDate, int orderId, int paymentMethodId)
+
+    public Payment(int id,  DateTime date, decimal amount, int paymentMethodId, int orderId)
     {
-        PaymentId = paymentId;
-        PaymentAmount = paymentAmount;
-        PaymentDate = paymentDate;
-        OrderId = orderId;
-        PaymentMethodId = paymentMethodId;
+        Id = id;
+        Date = date;
+        Amount = amount;
+        PaymentMethod.Id = paymentMethodId;
+        Order.Id = orderId;
     }
 
-    public Payment(decimal paymentAmount, DateTime paymentDate, int paymentMethodId)
+    public Payment(decimal paymentAmount, DateTime paymentDate, IPaymentMethod paymentMethod)
     {
-        PaymentAmount = paymentAmount;
-        PaymentDate = paymentDate;
-        PaymentMethodId = paymentMethodId;
+        Amount = paymentAmount;
+        Date = paymentDate;
+        PaymentMethod = paymentMethod;
     }
 }

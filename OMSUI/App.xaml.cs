@@ -38,13 +38,12 @@ namespace OrderManagerDesktopUI
 
             services.AddSingleton<IConfiguration>(config);
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<HomeViewModel>();
+            services.AddSingleton<DashboardViewModel>();
             services.AddScoped<NewOrderViewModel>();
             services.AddScoped<NoteViewModel>();
             services.AddScoped<DeliveryViewModel>();
             services.AddScoped<PaymentViewModel>();
-            services.AddScoped<NewOrderProductsViewModel>();
-            services.AddScoped<NewOrderDetailsViewModel>();
+            services.AddScoped<PriceChangeViewModel>();
             services.AddSingleton<OrdersViewModel>();
             services.AddSingleton<ProductsViewModel>();
             services.AddSingleton<CustomersViewModel>();
@@ -53,7 +52,7 @@ namespace OrderManagerDesktopUI
             services.AddScoped<IDataAccess, DataAccess>();
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
             services.AddScoped<IRepository<Delivery>,  DeliveryRepository>();
-            services.AddScoped<IRepository<MobilePayment>, MobilePaymentRepository>();
+            services.AddScoped<IRepository<PaymentMethod>, PaymentMethodRepository>();
             services.AddScoped<IRepository<Note>, NoteRepository>();
             services.AddScoped<IRepository<OrderLine>, OrderLineRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
@@ -73,6 +72,11 @@ namespace OrderManagerDesktopUI
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
             base.OnStartup(e);
+        }
+
+        private void Trigger_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
         }
     }
 

@@ -19,11 +19,12 @@ public class PickUpRepository : IRepository<PickUp>
         using (SqlCommand command = new SqlCommand("spPickUp_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            SqlParameter outputParam = new SqlParameter("@CollectionId", SqlDbType.Int);
+            SqlParameter outputParam = new SqlParameter("@Id", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
-            command.Parameters.AddWithValue("@CollectionDate", entity.CollectionDate);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@Date", entity.Date);
+            command.Parameters.AddWithValue("@IsDelivery", entity.IsDelivery);
+            command.Parameters.AddWithValue("@Location", entity.Location);
             command.Parameters.Add(outputParam);
 
             connection.Open();
@@ -38,9 +39,10 @@ public class PickUpRepository : IRepository<PickUp>
         using (SqlCommand command = new SqlCommand("spPickUp_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@CollectionId", entity.CollectionId);
-            command.Parameters.AddWithValue("@CollectionDate", entity.CollectionDate);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@Id", entity.Id);
+            command.Parameters.AddWithValue("@Date", entity.Date);
+            command.Parameters.AddWithValue("@IsDelivery", entity.IsDelivery);
+            command.Parameters.AddWithValue("@Location", entity.Location);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -52,7 +54,7 @@ public class PickUpRepository : IRepository<PickUp>
         using (SqlCommand command = new SqlCommand("spPickUp_Delete", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@CollectionId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -65,7 +67,7 @@ public class PickUpRepository : IRepository<PickUp>
         using (SqlCommand command = new SqlCommand("spPickUp_GetById", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@CollectionId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
 
             using SqlDataReader reader = command.ExecuteReader();
@@ -73,9 +75,10 @@ public class PickUpRepository : IRepository<PickUp>
             if (reader.Read())
             {
                 pickUp = new PickUp
-                    ((int)reader["CollectionId"],
-                    (DateTime)reader["CollectionDate"],
-                    (int)reader["OrderId"]);
+                    ((int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (bool)reader["IsDelivery"],
+                    (string)reader["Location"]);
             }
         }
         return pickUp;
@@ -95,14 +98,13 @@ public class PickUpRepository : IRepository<PickUp>
             {
                 pickUps.Add(new PickUp
                 (
-                    (int)reader["CollectionId"],
-                    (DateTime)reader["CollectionDate"],
-                    (int)reader["OrderId"]
+                    (int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (bool)reader["IsDelivery"],
+                    (string)reader["Location"]
                 ));
             }
         }
         return pickUps;
     }
-
-
 }

@@ -1,21 +1,25 @@
 ﻿using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Classes;
-public class PickUp : ICollectionType
+public class PickUp : IPickUp
 {
-    public int CollectionId { get; set; }
-    public DateTime CollectionDate { get; set; }
-    public int OrderId { get; set; }
+    public int Id { get; set; }
+    public DateTime Date { get; set; }
+    public bool IsDelivery { get; set; }
+    public string Location { get; set; }
 
-    public PickUp(int collectionId, DateTime collectionDate, int orderId)
+    public PickUp(int id, DateTime date, bool isDelivery, string location)
     {
-        CollectionId = collectionId;
-        CollectionDate = collectionDate;
-        OrderId = orderId;
+        Id = id;
+        Date = date;
+        IsDelivery = isDelivery;
+        Location = location;
     }
 
-    public PickUp(DateTime collectionDate)
+    public PickUp(DateTime date, bool isDelivery, string location)
     {
-        CollectionDate = collectionDate;
+        Date = date;
+        IsDelivery = isDelivery;
+        Location = location;
     }
 }

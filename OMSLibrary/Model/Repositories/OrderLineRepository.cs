@@ -20,7 +20,7 @@ public class OrderLineRepository : IRepository<OrderLine>
         {
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@ProductId", entity.Product.Id);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@OrderId", entity.Order.Id);
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
             command.Parameters.AddWithValue("@Price", entity.Price);
@@ -37,7 +37,7 @@ public class OrderLineRepository : IRepository<OrderLine>
         {
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@ProductId", entity.Product.Id);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
+            command.Parameters.AddWithValue("@OrderId", entity.Order.Id);
             command.Parameters.AddWithValue("@LineNumber", entity.LineNumber);
             command.Parameters.AddWithValue("@Quantity", entity.Quantity);
             command.Parameters.AddWithValue("@Price", entity.Price);

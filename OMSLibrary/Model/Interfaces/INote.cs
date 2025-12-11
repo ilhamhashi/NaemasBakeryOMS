@@ -2,7 +2,6 @@
 
 public interface INote
 {
-    int NoteId { get; set; }
-    string NoteText { get; set; }
-    int OrderId { get; set; }
+    int Id { get; set; }
+    string Content { get; set; }
 }

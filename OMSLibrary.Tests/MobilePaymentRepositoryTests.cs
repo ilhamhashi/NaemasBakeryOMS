@@ -9,7 +9,7 @@ namespace OrderManagerLibrary.Tests;
 [TestClass]
 public sealed class MobilePaymentRepositoryTests
 {
-    private IRepository<MobilePayment> _mobilePaymentRepository;
+    private IRepository<PaymentMethod> _mobilePaymentRepository;
     private IConfiguration _config;
     private IDataAccess _db;
 
@@ -18,22 +18,22 @@ public sealed class MobilePaymentRepositoryTests
     {
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         _db = new DataAccess.DataAccess(_config);
-        _mobilePaymentRepository = new MobilePaymentRepository(_db);
+        _mobilePaymentRepository = new PaymentMethodRepository(_db);
     }
 
     [TestMethod]
     public void InsertMobilePaymentMethod_ShouldInsertSuccesfully()
     {
         // Arrange
-        var payment = new MobilePayment (1,"EVC");
+        var payment = new PaymentMethod (1,"EVC");
 
         // Act
-        payment.PaymentMethodId = _mobilePaymentRepository.Insert(payment);
+        payment.Id = _mobilePaymentRepository.Insert(payment);
 
         // Assert
-        var retrievedPayment = _mobilePaymentRepository.GetById(payment.PaymentMethodId);
+        var retrievedPayment = _mobilePaymentRepository.GetById(payment.Id);
         Assert.IsNotNull(retrievedPayment);
-        Assert.AreEqual(payment.PaymentMethodId, retrievedPayment.PaymentMethodId);
+        Assert.AreEqual(payment.Id, retrievedPayment.Id);
         Assert.AreEqual(payment.Name, retrievedPayment.Name);
     }
 
@@ -42,10 +42,10 @@ public sealed class MobilePaymentRepositoryTests
     {
 
         // Arrange
-        var payment = new MobilePayment(0, "EVC");
+        var payment = new PaymentMethod(0, "EVC");
         int id = _mobilePaymentRepository.Insert(payment);
 
-        var updatedPayment = new MobilePayment(id, "Dahabshiil");
+        var updatedPayment = new PaymentMethod(id, "Dahabshiil");
 
         // Act
         _mobilePaymentRepository.Update(updatedPayment);
@@ -59,7 +59,7 @@ public sealed class MobilePaymentRepositoryTests
     public void DeleteMobilePaymentMethod_ShouldDeleteSuccessfully()
     {
         // Arrange
-        var payment = new MobilePayment(0, "EVC");
+        var payment = new PaymentMethod(0, "EVC");
         int id = _mobilePaymentRepository.Insert(payment);
         Assert.IsNotNull(_mobilePaymentRepository.GetById(id));
 
@@ -73,7 +73,7 @@ public sealed class MobilePaymentRepositoryTests
     public void GetById_ShouldReturnMobilePaymentMethodSuccessfully()
     {
         // Arrange
-        var payment = new MobilePayment(0, "EVC");
+        var payment = new PaymentMethod(0, "EVC");
         int id = _mobilePaymentRepository.Insert(payment);
 
         // Act

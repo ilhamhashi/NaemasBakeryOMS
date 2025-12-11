@@ -27,12 +27,12 @@ public sealed class OrderRepositoryTests
         var order = new Order(DateTime.Now, OrderStatus.FullyPaid, 17);
        
         // Act
-        order.OrderId = _orderRepository.Insert(order);
+        order.Id = _orderRepository.Insert(order);
 
         // Assert
-        var retrievedOrder = _orderRepository.GetById(order.OrderId);
+        var retrievedOrder = _orderRepository.GetById(order.Id);
         Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(order.OrderDate.ToString(), retrievedOrder.OrderDate.ToString());
+        Assert.AreEqual(order.Date.ToString(), retrievedOrder.Date.ToString());
         Assert.AreEqual(order.Status, retrievedOrder.Status);
         Assert.AreEqual(order.CustomerId, retrievedOrder.CustomerId);
     }
@@ -51,7 +51,7 @@ public sealed class OrderRepositoryTests
         // Assert
         var retrievedOrder = _orderRepository.GetById(orderId);
         Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(retrievedOrder.OrderDate.ToString(), updatedOrder.OrderDate.ToString());
+        Assert.AreEqual(retrievedOrder.Date.ToString(), updatedOrder.Date.ToString());
         Assert.AreEqual(retrievedOrder.Status, updatedOrder.Status);
         Assert.AreEqual(retrievedOrder.CustomerId, updatedOrder.CustomerId);
     }
@@ -83,7 +83,7 @@ public sealed class OrderRepositoryTests
 
         // Assert
         Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(retrievedOrder.OrderDate.ToString(), order.OrderDate.ToString());
+        Assert.AreEqual(retrievedOrder.Date.ToString(), order.Date.ToString());
         Assert.AreEqual(retrievedOrder.Status, order.Status);
         Assert.AreEqual(retrievedOrder.CustomerId, order.CustomerId);
     }

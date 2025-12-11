@@ -25,10 +25,10 @@ public class PaymentRepository : IRepository<Payment>
             SqlParameter outputParam = new SqlParameter("@PaymentId", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
-            command.Parameters.AddWithValue("@PaymentDate", entity.PaymentDate);
-            command.Parameters.AddWithValue("@PaymentAmount", entity.PaymentAmount);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
-            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethodId);
+            command.Parameters.AddWithValue("@Date", entity.Date);
+            command.Parameters.AddWithValue("@Amount", entity.Amount);
+            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethod.Id);
+            command.Parameters.AddWithValue("@OrderId", entity.Order.Id);
             command.Parameters.Add(outputParam);
 
             connection.Open();
@@ -43,11 +43,11 @@ public class PaymentRepository : IRepository<Payment>
         using (SqlCommand command = new SqlCommand("spPayment_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@PaymentId", entity.OrderId);
-            command.Parameters.AddWithValue("@PaymentDate", entity.PaymentDate);
-            command.Parameters.AddWithValue("@PaymentAmount", entity.PaymentAmount);
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
-            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethodId);
+            command.Parameters.AddWithValue("@Id", entity.Id);
+            command.Parameters.AddWithValue("@Date", entity.Date);
+            command.Parameters.AddWithValue("@Amount", entity.Amount);
+            command.Parameters.AddWithValue("@PaymentMethodId", entity.PaymentMethod.Id);
+            command.Parameters.AddWithValue("@OrderId", entity.Order.Id);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -59,7 +59,7 @@ public class PaymentRepository : IRepository<Payment>
         using (SqlCommand command = new SqlCommand("spPayment_Delete", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@PaymentId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -71,7 +71,7 @@ public class PaymentRepository : IRepository<Payment>
         using (SqlCommand command = new SqlCommand("spPayment_GetById", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@PaymentId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
 
             using SqlDataReader reader = command.ExecuteReader();
@@ -79,11 +79,11 @@ public class PaymentRepository : IRepository<Payment>
             if (reader.Read())
             {
                 payment = new Payment
-                    ((int)reader["PaymentId"],
-                    (decimal)reader["PaymentAmount"],
-                    (DateTime)reader["PaymentDate"], 
-                    (int)reader["OrderId"],
-                    (int)reader["PaymentMethodId"]);
+                    ((int)reader["Id"],
+                    (DateTime)reader["Date"], 
+                    (decimal)reader["Amount"], 
+                    (int)reader["PaymentMethodId"],
+                    (int)reader["OrderId"]);
             }
             return payment;
         }
@@ -103,11 +103,11 @@ public class PaymentRepository : IRepository<Payment>
             {
                 payments.Add(new Payment
                 (
-                    (int)reader["PaymentId"],
-                    (decimal)reader["PaymentAmount"],
-                    (DateTime)reader["PaymentDate"],
-                    (int)reader["OrderId"],
-                    (int)reader["PaymentMethodId"]
+                    (int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (decimal)reader["Amount"],
+                    (int)reader["PaymentMethodId"],
+                    (int)reader["OrderId"]
                 ));
             }
             return payments;

@@ -6,35 +6,36 @@ using System.Data;
 
 namespace OrderManagerLibrary.Model.Repositories;
 /// <summary>
-/// Repository responsible for handling database operations related to Notes.
+/// Repository responsible for handling database operations related to MobilePayment.
 /// Provides CRUD functionality using stored procedures.
 /// </summary>
-public class NoteRepository : IRepository<Note>
+public class PaymentMethodRepository : IRepository<PaymentMethod>
 {
     private readonly IDataAccess _db;
 
     /// <summary>
     /// Initializes the repository with access to the database connection provider.
-    /// Uses dependency injection for improved testability.
+    /// Uses dependency injection for improved testability. 
     /// </summary>
-    public NoteRepository(IDataAccess db)
+    public PaymentMethodRepository(IDataAccess db)
     {
         _db = db;
     }
 
     /// <summary>
-    /// Inserts a new Note into the database and returns the generated NoteId.
+    /// Inserts a new mobile payment method 
+    /// into the database and returns the generated PaymentMethodId.
     /// </summary>
-    public int Insert(Note entity)
+    public int Insert(PaymentMethod entity)
     {
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_Insert", connection))
+        using (SqlCommand command = new SqlCommand("spPaymentMethod_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
             SqlParameter outputParam = new("@Id", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
-            command.Parameters.AddWithValue("@Content", entity.Content);
+            command.Parameters.AddWithValue("@Name", entity.Name);
             command.Parameters.Add(outputParam);
             connection.Open();
             command.ExecuteNonQuery();
@@ -44,28 +45,28 @@ public class NoteRepository : IRepository<Note>
     }
 
     /// <summary>
-    /// Updates an existing note in the database.
+    /// Updates the name of an existing mobile payment method based on PaymentMethodId.
     /// </summary>
-    public void Update(Note entity)
+    public void Update(PaymentMethod entity)
     {
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_Update", connection))
+        using (SqlCommand command = new SqlCommand("spPaymentMethod_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@Id", entity.Id);
-            command.Parameters.AddWithValue("@Content", entity.Content);
+            command.Parameters.AddWithValue("@Name", entity.Name);
             connection.Open();
             command.ExecuteNonQuery();
         }
     }
 
     /// <summary>
-    /// Deletes a note (NoteId required).
+    /// Deletes a mobile payment method from the database using PaymentMethodId.
     /// </summary>
     public void Delete(params object[] keyValues)
     {
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_Delete", connection))
+        using (SqlCommand command = new SqlCommand("spPaymentMethod_Delete", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@Id", keyValues[0]);
@@ -75,15 +76,15 @@ public class NoteRepository : IRepository<Note>
     }
 
     /// <summary>
-    /// Retrieves a single note by NoteId.
-    /// Returns null if no record exists.
+    /// Retrieves a mobile payment method by PaymentMethodId.
+    /// Returns null if no matching record is found.
     /// </summary>
-    public Note GetById(params object[] keyValues)
+    public PaymentMethod GetById(params object[] keyValues)
     {
-        Note note = null;
+        PaymentMethod paymentMethod = null;
 
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_GetById", connection))
+        using (SqlCommand command = new SqlCommand("spPaymentMethod_GetById", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@Id", keyValues[0]);
@@ -92,22 +93,23 @@ public class NoteRepository : IRepository<Note>
             using SqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
             {
-                note = new Note(
+                paymentMethod = new PaymentMethod(
                     (int)reader["Id"],
-                    (string)reader["Content"]);
+                    (string)reader["Name"]
+                );
             }
-            return note;
+            return paymentMethod;
         }
     }
 
     /// <summary>
-    /// Retrieves all notes from the database.
+    /// Retrieves all available mobile payment methods from the database.
     /// </summary>
-    public IEnumerable<Note> GetAll()
+    public IEnumerable<PaymentMethod> GetAll()
     {
-        var notes = new List<Note>();
+        var paymentMethods = new List<PaymentMethod>();
         using SqlConnection connection = _db.GetConnection();
-        using (SqlCommand command = new SqlCommand("spNote_GetAll", connection))
+        using (SqlCommand command = new SqlCommand("spPaymentMethod_GetAll", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
             connection.Open();
@@ -115,12 +117,12 @@ public class NoteRepository : IRepository<Note>
 
             while (reader.Read())
             {
-                notes.Add(new Note(
+                paymentMethods.Add(new PaymentMethod(
                     (int)reader["Id"],
-                    (string)reader["Content"]
+                    (string)reader["Name"]
                 ));
             }
-            return notes;
+            return paymentMethods;
         }
     }
 }

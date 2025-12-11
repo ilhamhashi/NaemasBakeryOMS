@@ -20,12 +20,14 @@ public class OrderRepository : IRepository<Order>
         using (SqlCommand command = new SqlCommand("spOrder_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            SqlParameter outputParam = new SqlParameter("@OrderId", SqlDbType.Int);
+            SqlParameter outputParam = new SqlParameter("@Id", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
-            command.Parameters.AddWithValue("@OrderDate", entity.OrderDate);
-            command.Parameters.AddWithValue("@OrderStatus", entity.Status);
-            command.Parameters.AddWithValue("@CustomerId", entity.CustomerId);
+            command.Parameters.AddWithValue("@Date", entity.Date);
+            command.Parameters.AddWithValue("@Status", entity.Status);
+            command.Parameters.AddWithValue("@CustomerId", entity.Customer.Id);
+            command.Parameters.AddWithValue("@PickUpId", entity.PickUp.Id);
+            command.Parameters.AddWithValue("@NoteId", entity.Note.Id);
             command.Parameters.Add(outputParam);
 
             connection.Open();
@@ -40,10 +42,12 @@ public class OrderRepository : IRepository<Order>
         using (SqlCommand command = new SqlCommand("spOrder_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@OrderId", entity.OrderId);
-            command.Parameters.AddWithValue("@OrderDate", entity.OrderDate);
-            command.Parameters.AddWithValue("@OrderStatus", entity.Status);
-            command.Parameters.AddWithValue("@CustomerId", entity.CustomerId);
+            command.Parameters.AddWithValue("@Id", entity.Id);
+            command.Parameters.AddWithValue("@Date", entity.Date);
+            command.Parameters.AddWithValue("@Status", entity.Status);
+            command.Parameters.AddWithValue("@CustomerId", entity.Customer.Id);
+            command.Parameters.AddWithValue("@PickUpId", entity.PickUp.Id);
+            command.Parameters.AddWithValue("@NoteId", entity.Note.Id);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -55,7 +59,7 @@ public class OrderRepository : IRepository<Order>
         using (SqlCommand command = new SqlCommand("spOrder_Delete", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@OrderId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -67,7 +71,7 @@ public class OrderRepository : IRepository<Order>
         using (SqlCommand command = new SqlCommand("spOrder_GetById", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@OrderId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
 
             using SqlDataReader reader = command.ExecuteReader();
@@ -75,10 +79,12 @@ public class OrderRepository : IRepository<Order>
             if (reader.Read())
             {
                 order = new Order
-                    ((int)reader["OrderId"],
-                    (DateTime)reader["OrderDate"],
-                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["OrderStatus"]),
-                    (int)reader["CustomerId"]);
+                    ((int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
+                    (int)reader["CustomerId"],
+                    (int)reader["PickUpId"],
+                    (int)reader["NoteId"]);
             }
             return order;
         }
@@ -98,13 +104,62 @@ public class OrderRepository : IRepository<Order>
             {
                 orders.Add(new Order
                 (
-                    (int)reader["OrderId"],
-                    (DateTime)reader["OrderDate"],
-                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["OrderStatus"]),
-                    (int)reader["CustomerId"]
+                    (int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
+                    (int)reader["CustomerId"],
+                    (int)reader["PickUpId"],
+                    (int)reader["NoteId"]
                 ));
             }
             return orders;
+        }
+    }
+
+    public IEnumerable<Order> GetUpcomingOrders()
+    {
+        var upcomingOrders = new List<Order>();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spOrder_GetUpcomingOrders", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+
+            using SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                upcomingOrders.Add(new Order
+                (
+                    (int)reader["OrderId"],
+                    (DateTime)reader["OrderDate"],
+                    (string)reader["CustomerName"],
+                    (DateTime)reader["PickUpDate"],
+                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["OrderStatus"])
+                ));
+            }
+            return upcomingOrders;
+        }
+    }
+    public IEnumerable<Order> GetPendingPaymentOrders()
+    {
+        var pendingPaymentOrders = new List<Order>();
+        using SqlConnection connection = _db.GetConnection();
+        using (SqlCommand command = new SqlCommand("spOrder_GetPendingPaymentOrders", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+
+            using SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                pendingPaymentOrders.Add(new Order
+                (
+                    (int)reader["OrderId"],
+                    (string)reader["CustomerName"],
+                    (decimal)reader["Amount"]
+                ));
+            }
+            return pendingPaymentOrders;
         }
     }
 }

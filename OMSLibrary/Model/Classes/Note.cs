@@ -1,24 +1,32 @@
 ﻿using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Classes;
+/// <summary>
+/// Represents an internal note related to a specific order,
+/// used to store comments, special instructions or customer requests.
+/// </summary>
 public class Note : INote
 {
-    public int NoteId { get; set; }
-    public string NoteText { get; set; }
-    public int OrderId { get; set; }
-    //public List<string> ImagePaths { get; set; }
+    public int Id { get; set; }
+    public string Content { get; set; }
 
-    public Note(int noteId, string noteText, int orderId)
+
+    /// <summary>
+    /// Constructor used when loading an existing Note from the database.
+    /// NoteId is already known and assigned by the database.
+    /// </summary>
+    public Note(int noteId, string content)
     {
-        NoteId = noteId;
-        NoteText = noteText;
-        OrderId = orderId;
-        //ImagePaths = imagePaths;
+        Id = noteId;
+        Content = content;
     }
 
-    public Note(string noteText)
+    /// <summary>
+    /// Constructor used when creating a new Note to be saved to the database.
+    /// NoteId will be generated automatically.
+    /// </summary>
+    public Note(string content)
     {
-        NoteText = noteText;
-        //ImagePaths = imagePaths;
+        Content = content;
     }
 }

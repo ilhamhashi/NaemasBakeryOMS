@@ -6,36 +6,102 @@
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70*"/>
-            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <!-- VENSTRE: LISTE + FILTER -->
+        <Border Grid.Column="0"
+                Style="{StaticResource whiteBorder}"
+                Background="#d1f0e5"
+                Margin="0 0 20 0">
+            <StackPanel Margin="10">
 
-        <Grid Grid.RowSpan="2">
-            <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 0">
-                <StackPanel>
-                    <TextBlock Text="filter by" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <TextBlock Text="productlist" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <!-- Filter -->
+                <TextBlock Text="Filter by name:" 
+                           FontSize="16" 
+                           Margin="0 0 0 5"/>
+                <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
+                         Width="200"
+                         Margin="0 0 0 10"/>
+
+                <!-- Liste med produkter -->
+                <ListBox ItemsSource="{Binding ProductsView}"
+                         SelectedItem="{Binding SelectedProduct}"
+                         DisplayMemberPath="Name"
+                        
+                         Margin="0 10 0 0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- HØJRE: CREATE + EDIT -->
+        <Border Grid.Column="1"
+                Style="{StaticResource whiteBorder}"
+                Background="#d1f0e5"
+                Margin="0">
+            <StackPanel Margin="10">
+
+                <!-- CREATE PRODUCT -->
+                <TextBlock Text="Create Product" 
+                           FontSize="20" 
+                           Margin="0 0 0 10"/>
+
+                <TextBlock Text="Name"/>
+                <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0 0 0 5"/>
+
+                <TextBlock Text="Description"/>
+                <TextBox Text="{Binding NewDescription, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0 0 0 5"/>
+
+                <TextBlock Text="Price"/>
+                <TextBox Text="{Binding NewPrice, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0 0 0 10"/>
+
+                <Button Content="Create"
+                        Style="{StaticResource addButton}"
+                        Command="{Binding CreateCommand}"
+                        Margin="0 0 0 10"/>
+
+                <Separator Margin="0 10"/>
+
+                <!-- EDIT PRODUCT -->
+                <TextBlock Text="Edit Selected Product" 
+                           FontSize="20" 
+                           Margin="0 0 0 10"/>
+
+                <TextBlock Text="Name"/>
+                <TextBox Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0 0 0 5"/>
+
+                <TextBlock Text="Description"/>
+                <TextBox Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0 0 0 5"/>
+
+                <TextBlock Text="Price"/>
+                <TextBox Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0 0 0 10"/>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0 10 0 0">
+                    <Button Content="Update"
+                            Width="100"
+                            Margin="5"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding UpdateCommand}"/>
+
+                    <Button Content="Delete"
+                            Width="100"
+                            Margin="5"
+                            Style="{StaticResource addButton}"
+                            Command="{Binding DeleteCommand}"/>
                 </StackPanel>
-            </Border>
-        </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="0">
-            <Border Style="{StaticResource whiteBorder}" Margin="15 0 0 7">
-                <TextBlock Text="create product" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-        </Grid>
+            </StackPanel>
+        </Border>
 
-        <Grid Grid.Column="1" Grid.Row="1">
-            <Border Style="{StaticResource whiteBorder}" Margin="15 7 0 0">
-                <TextBlock Text="edit product" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Border>
-        </Grid>
     </Grid>
 </UserControl>

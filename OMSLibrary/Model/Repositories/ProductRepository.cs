@@ -1,10 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using OrderManagerLibrary.DataAccess;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using System.Data;
-using System.Data.Common;
 
 namespace OrderManagerLibrary.Model.Repositories;
 public class ProductRepository : IRepository<Product>
@@ -22,7 +20,7 @@ public class ProductRepository : IRepository<Product>
         using (SqlCommand command = new SqlCommand("spProduct_Insert", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            SqlParameter outputParam = new SqlParameter("@ProductId", SqlDbType.Int);
+            SqlParameter outputParam = new SqlParameter("@Id", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.Output;
 
             command.Parameters.AddWithValue("@Name", entity.Name);
@@ -42,7 +40,7 @@ public class ProductRepository : IRepository<Product>
         using (SqlCommand command = new SqlCommand("spProduct_Update", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", entity.Id);
+            command.Parameters.AddWithValue("@Id", entity.Id);
             command.Parameters.AddWithValue("@Name", entity.Name);
             command.Parameters.AddWithValue("@Description", entity.Description);
             command.Parameters.AddWithValue("@Price", entity.Price);
@@ -57,7 +55,7 @@ public class ProductRepository : IRepository<Product>
         using (SqlCommand command = new SqlCommand("spProduct_Delete", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -70,7 +68,7 @@ public class ProductRepository : IRepository<Product>
         using (SqlCommand command = new SqlCommand("spProduct_GetById", connection))
         {
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ProductId", keyValues[0]);
+            command.Parameters.AddWithValue("@Id", keyValues[0]);
             connection.Open();
 
             using SqlDataReader reader = command.ExecuteReader();
@@ -78,7 +76,7 @@ public class ProductRepository : IRepository<Product>
             if (reader.Read())
             {
                 product = new Product
-                    ((int)reader["ProductId"],
+                    ((int)reader["Id"],
                     (string)reader["Name"],
                     (string)reader["Description"],
                     (decimal)reader["Price"]);
@@ -99,7 +97,7 @@ public class ProductRepository : IRepository<Product>
             while (reader.Read())
             {
                 products.Add(new Product
-                    ((int)reader["ProductId"],
+                    ((int)reader["Id"],
                     (string)reader["Name"],
                     (string)reader["Description"],
                     (decimal)reader["Price"]));

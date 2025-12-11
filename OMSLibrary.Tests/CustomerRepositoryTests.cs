@@ -28,10 +28,10 @@ public sealed class CustomerRepositoryTests
         var customer = new Customer ("John", "Doe", "12345678");
 
         // Act
-        customer.CustomerId = _customerRepository.Insert(customer);
+        customer.Id = _customerRepository.Insert(customer);
 
         // Assert
-        var retrievedCustomer = _customerRepository.GetById(customer.CustomerId);
+        var retrievedCustomer = _customerRepository.GetById(customer.Id);
         Assert.IsNotNull(retrievedCustomer);
         Assert.AreEqual(customer.FirstName, retrievedCustomer.FirstName);
         Assert.AreEqual(customer.LastName, retrievedCustomer.LastName);
@@ -92,13 +92,13 @@ public sealed class CustomerRepositoryTests
     {
         // Arrange
         var customer = new Customer("John", "Doe", "12345678");
-        customer.CustomerId = _customerRepository.Insert(customer);
-        Assert.IsNotNull(_customerRepository.GetById(customer.CustomerId));
+        customer.Id = _customerRepository.Insert(customer);
+        Assert.IsNotNull(_customerRepository.GetById(customer.Id));
 
         // Act
         _customerRepository.Delete(customer);
 
         // Assert
-        Assert.IsNull(_customerRepository.GetById(customer.CustomerId));
+        Assert.IsNull(_customerRepository.GetById(customer.Id));
     }
 }

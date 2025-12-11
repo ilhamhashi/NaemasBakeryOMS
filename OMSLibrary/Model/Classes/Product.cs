@@ -7,6 +7,7 @@ public class Product
     public decimal Price { get; set; }
     public List<Taste> Tastes { get; set; }
     public List<Size> Sizes { get; set; }
+
     public Taste SelectedTaste { get; set; }
     public Size SelectedSize { get; set; }
 

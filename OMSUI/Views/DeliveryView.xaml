@@ -6,7 +6,43 @@
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Label Content="DELIVERY" />
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NewOrderView}}" >        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel HorizontalAlignment="Center" >
+
+            <Label Content="Select date and time" />           
+ 
+            <!-- Delivery Date -->
+            <DatePicker Margin="10" 
+                        Grid.Row="4"
+                        Width="200" Height="25"                      
+                        SelectedDate="{Binding DataContext.PickUpDate,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <!-- Delivery Time -->
+            <TextBox Margin="10"
+                         Width="200" Height="25"
+                         IsEnabled="{Binding ElementName=DeliveryCheckBox, 
+                         Path=IsChecked}"
+                         Text="{Binding DataContext.PickUpTime, StringFormat={}{0:t}, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Label Content="Optional" />
+            <!-- Select Delivery CheckBox -->
+            <CheckBox Margin="10"
+                   HorizontalAlignment="Center"
+                   Content="Deliver to address"
+                   IsChecked="{Binding Path=DataContext.IsDelivery, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <!-- Delivery Address TextBox -->
+            <TextBox Margin="10"
+                     IsEnabled="{Binding ElementName=DeliveryCheckBox, Path=IsChecked}"
+                     Text="{Binding DataContext.Address, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

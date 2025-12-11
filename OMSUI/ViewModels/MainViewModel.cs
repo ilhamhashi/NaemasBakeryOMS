@@ -27,7 +27,7 @@ public class MainViewModel : ViewModel
     public RelayCommand NavigateToCustomersCommand { get; set; }
     public RelayCommand NavigateToProductsCommand { get; set; }
     public RelayCommand NavigateToSalesDataCommand { get; set; }
-    public RelayCommand NavigateToHomeCommand { get; set; }
+    public RelayCommand NavigateToDashboardCommand { get; set; }
 
     public ICommand CloseCommand { get; }
     public ICommand MaximizeCommand { get; }
@@ -55,7 +55,7 @@ public class MainViewModel : ViewModel
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         });
         Navigation = navigationService;
-        Navigation.NavigateTo<HomeViewModel>();
+        Navigation.NavigateTo<NewOrderViewModel>();
 
         NavigateToNewOrderCommand = new RelayCommand(
             execute => { Navigation.NavigateTo<NewOrderViewModel>(); }, canExecute => true);
@@ -67,7 +67,7 @@ public class MainViewModel : ViewModel
             execute => { Navigation.NavigateTo<ProductsViewModel>(); }, canExecute => true);
         NavigateToSalesDataCommand = new RelayCommand(
             execute => { Navigation.NavigateTo<SalesDataViewModel>(); }, canExecute => true);
-        NavigateToHomeCommand = new RelayCommand(
-            execute => { Navigation.NavigateTo<HomeViewModel>(); }, canExecute => true);
+        NavigateToDashboardCommand = new RelayCommand(
+            execute => { Navigation.NavigateTo<DashboardViewModel>(); }, canExecute => true);
     }
 }

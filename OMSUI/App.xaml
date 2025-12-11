@@ -14,12 +14,12 @@
                 <ResourceDictionary Source="Themes/MenuButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type TypeName=vm:HomeViewModel}">
-                <view:DashBoardView/>
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type TypeName=vm:NewOrderViewModel}">
                 <view:NewOrderView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type TypeName=vm:DashboardViewModel}">
+                <view:DashBoardView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TypeName=vm:NoteViewModel}">
@@ -34,8 +34,8 @@
                 <view:PaymentView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=vm:NewOrderDetailsViewModel}">
-                <view:NewOrderDetailsView/>
+            <DataTemplate DataType="{x:Type TypeName=vm:PriceChangeViewModel}">
+                <view:PriceChangeView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TypeName=vm:OrdersViewModel}">
@@ -58,12 +58,11 @@
                 <Setter Property="Background" Value="#66CDAA" />
                 <Setter Property="Foreground" Value="#ffffff" />
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                <Setter Property="Height" Value="35" />
-                <Setter Property="Margin" Value="10 0 0 0" />
-                <Setter Property="Padding" Value="20 5 20 5" />    
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Margin" Value="15 0 0 0" />
+                <Setter Property="Padding" Value="10 2 10 2" />    
                 <Setter Property="FontSize" Value="12" />
                 <Setter Property="HorizontalAlignment" Value="Left" />
-                <Setter Property="Grid.Row" Value="1" />
                 <Setter Property="Template" >
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -104,7 +103,7 @@
                 <Setter Property="FontSize" Value="13" />
                 <Setter Property="GridLinesVisibility" Value="None" />
                 <Setter Property="ColumnWidth" Value="*" />
-
+                
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type DataGrid}">

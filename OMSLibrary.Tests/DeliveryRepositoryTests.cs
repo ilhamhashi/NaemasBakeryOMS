@@ -28,14 +28,14 @@ public sealed class DeliveryRepositoryTests
         var delivery = new Delivery (DateTime.Now, 1, "Downtown");
 
         // Act
-        delivery.CollectionId = _deliveryRepository.Insert(delivery);
+        delivery.Id = _deliveryRepository.Insert(delivery);
 
         // Assert
-        var retrievedDelivery = _deliveryRepository.GetById(delivery.CollectionId);
+        var retrievedDelivery = _deliveryRepository.GetById(delivery.Id);
         Assert.IsNotNull(retrievedDelivery);
-        Assert.AreEqual(delivery.CollectionDate.ToString(), retrievedDelivery.CollectionDate.ToString());
+        Assert.AreEqual(delivery.Date.ToString(), retrievedDelivery.Date.ToString());
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
-        Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
+        Assert.AreEqual(delivery.Address, retrievedDelivery.Address);
     }
 
     [TestMethod]
@@ -52,9 +52,9 @@ public sealed class DeliveryRepositoryTests
         // Assert
         var retrievedDelivery = _deliveryRepository.GetById(deliveryId);
         Assert.IsNotNull(retrievedDelivery);
-        Assert.AreEqual(updatedDelivery.CollectionDate.ToString(), retrievedDelivery.CollectionDate.ToString());
+        Assert.AreEqual(updatedDelivery.Date.ToString(), retrievedDelivery.Date.ToString());
         Assert.AreEqual(updatedDelivery.OrderId, retrievedDelivery.OrderId);
-        Assert.AreEqual(updatedDelivery.Neighborhood, retrievedDelivery.Neighborhood);
+        Assert.AreEqual(updatedDelivery.Address, retrievedDelivery.Address);
     }
 
     [TestMethod]
@@ -84,9 +84,9 @@ public sealed class DeliveryRepositoryTests
 
         // Assert
         Assert.IsNotNull(retrievedDelivery);
-        Assert.AreEqual(delivery.CollectionDate.ToString(), retrievedDelivery.CollectionDate.ToString());
+        Assert.AreEqual(delivery.Date.ToString(), retrievedDelivery.Date.ToString());
         Assert.AreEqual(delivery.OrderId, retrievedDelivery.OrderId);
-        Assert.AreEqual(delivery.Neighborhood, retrievedDelivery.Neighborhood);
+        Assert.AreEqual(delivery.Address, retrievedDelivery.Address);
     }
 
     [TestMethod]

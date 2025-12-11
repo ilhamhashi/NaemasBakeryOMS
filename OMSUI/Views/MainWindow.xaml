@@ -76,7 +76,7 @@
                     <!--Menu Items-->
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Command="{Binding NavigateToHomeCommand}"
+                                 Command="{Binding NavigateToDashboardCommand}"
                                  IsChecked="True">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="InvoiceTextPlusOutline" Style="{StaticResource menuButtonIcon}"/>
