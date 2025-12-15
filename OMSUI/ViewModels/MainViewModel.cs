@@ -36,7 +36,7 @@ public class MainViewModel : ViewModel
 
     public MainViewModel(INavigationService navigationService)
     {
-        // Window control commands -> Luk, maksimer, minimer
+        // Window control commands -> Close, Maximise and Minimize window
         CloseCommand = new RelayCommand(o =>
         {
             Application.Current.Shutdown();
@@ -55,8 +55,10 @@ public class MainViewModel : ViewModel
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         });
         Navigation = navigationService;
-        Navigation.NavigateTo<NewOrderViewModel>();
+        Navigation.NavigateTo<DashboardViewModel>();
 
+        NavigateToDashboardCommand = new RelayCommand(
+            execute => { Navigation.NavigateTo<DashboardViewModel>(); }, canExecute => true);
         NavigateToNewOrderCommand = new RelayCommand(
             execute => { Navigation.NavigateTo<NewOrderViewModel>(); }, canExecute => true);
         NavigateToOrdersCommand = new RelayCommand(
@@ -67,7 +69,6 @@ public class MainViewModel : ViewModel
             execute => { Navigation.NavigateTo<ProductsViewModel>(); }, canExecute => true);
         NavigateToSalesDataCommand = new RelayCommand(
             execute => { Navigation.NavigateTo<SalesDataViewModel>(); }, canExecute => true);
-        NavigateToDashboardCommand = new RelayCommand(
-            execute => { Navigation.NavigateTo<DashboardViewModel>(); }, canExecute => true);
+
     }
 }

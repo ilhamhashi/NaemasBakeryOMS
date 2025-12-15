@@ -8,7 +8,6 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="70*" />
             <RowDefinition Height="30*" />
@@ -29,15 +28,16 @@
                           VerticalAlignment="Stretch">      
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
-                        Binding="{Binding OrderId, UpdateSourceTrigger=PropertyChanged}"/>
+                        Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Date" IsReadOnly="True" Width="auto"
-                        Binding="{Binding OrderDate, UpdateSourceTrigger=PropertyChanged}"/>
+                        Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="auto"
-                        Binding="{Binding CustomerFullName, UpdateSourceTrigger=PropertyChanged}"/>
+                        Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="auto"
                         Binding="{Binding PickUp.Date, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Status" IsReadOnly="True" Width="auto"
                         Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
+                        
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
@@ -52,11 +52,11 @@
               VerticalAlignment="Stretch">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
-            Binding="{Binding OrderId, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="auto"
-            Binding="{Binding CustomerFullName, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Amount" IsReadOnly="True" Width="auto"
-            Binding="{Binding OrderDate, UpdateSourceTrigger=PropertyChanged}"/>
+            Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
+            Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Amount" IsReadOnly="True" Width="*"
+            Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>
@@ -70,27 +70,40 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Style="{StaticResource whiteBorder}" Margin="15 0 7 0">
-                <StackPanel>
-                    <TextBlock Text="{Binding WeeklyRevenue, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="$100,00        this week" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+            <Border Grid.Column="0" 
+                    CornerRadius="7" Margin="15 7 7 0">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#cae3db" Offset="0"/>
+                        <GradientStop Color="#e0f5ee" Offset="0.8"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding WeeklyRevenue, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="this week" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="7 0 7 0">
-                <StackPanel>
-                    <TextBlock Text="{Binding MonthlyRevenue, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="$100,00         this month" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+            <Border Grid.Column="1" 
+                    Style="{StaticResource whiteBorder}" Margin="7 7 7 0"
+                    Background="#e0f5ee">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding MonthlyRevenue, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="this month" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource whiteBorder}" Margin="7 0 7 0">
-                <StackPanel>
+            <Border Grid.Column="2" 
+                    Style="{StaticResource whiteBorder}" Margin="7 7 7 0"
+                    Background="#e0f5ee">
+                <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="{Binding MostPopularProduct, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="'Cake'          most popular" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="most popular" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>            </Border>
-            <Border Grid.Column="3" Style="{StaticResource whiteBorder}" Margin="7 0 0 0">
-                <StackPanel>
+            <Border Grid.Column="3" 
+                    Style="{StaticResource whiteBorder}" Margin="7 7 0 0"
+                    Background="#e0f5ee">
+                <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="{Binding MonthlyOrdersCount, UpdateSourceTrigger=PropertyChanged}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="100 orders      this month" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="this month" TextWrapping="Wrap" FontSize="25" TextAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>

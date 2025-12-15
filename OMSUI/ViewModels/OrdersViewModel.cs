@@ -11,6 +11,17 @@ namespace OrderManagerDesktopUI.ViewModels;
 
 public class OrdersViewModel : ViewModel
 {
+
+    private readonly IOrderService _orderService;
+    public ObservableCollection<Order> Orders { get; private set; } = [];
+
+    public OrdersViewModel(IOrderService orderService)
+    {
+        _orderService = orderService;
+        Orders = new ObservableCollection<Order>(_orderService.GetAllOrders());
+    }
+
+    /*
     // <<<<<< Services >>>>>>
     private readonly IOrderService _orderService;
 
@@ -311,4 +322,6 @@ public class OrdersViewModel : ViewModel
             OrdersCollectionView.Refresh();
         }
     }
+
+    */
 }

@@ -82,8 +82,8 @@ public class PickUpRepository : IRepository<PickUp>
             }
         }
         return pickUp;
-    }    
-    
+    }
+
     public IEnumerable<PickUp> GetAll()
     {
         var pickUps = new List<PickUp>();

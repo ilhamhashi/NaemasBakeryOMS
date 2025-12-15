@@ -130,11 +130,12 @@ public class OrderRepository : IRepository<Order>
             {
                 upcomingOrders.Add(new Order
                 (
-                    (int)reader["OrderId"],
-                    (DateTime)reader["OrderDate"],
-                    (string)reader["CustomerName"],
-                    (DateTime)reader["PickUpDate"],
-                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["OrderStatus"])
+                    (int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
+                    (int)reader["CustomerId"],
+                    (int)reader["PickUpId"],
+                    (int)reader["NoteId"]
                 ));
             }
             return upcomingOrders;
@@ -154,9 +155,12 @@ public class OrderRepository : IRepository<Order>
             {
                 pendingPaymentOrders.Add(new Order
                 (
-                    (int)reader["OrderId"],
-                    (string)reader["CustomerName"],
-                    (decimal)reader["Amount"]
+                    (int)reader["Id"],
+                    (DateTime)reader["Date"],
+                    (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
+                    (int)reader["CustomerId"],
+                    (int)reader["PickUpId"],
+                    (int)reader["NoteId"]
                 ));
             }
             return pendingPaymentOrders;

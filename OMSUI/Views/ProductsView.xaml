@@ -6,19 +6,17 @@
              xmlns:local="clr-namespace:OrderManagerDesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- VENSTRE: LISTE + FILTER -->
-        <Border Grid.Column="0"
-                Style="{StaticResource whiteBorder}"
-                Background="#d1f0e5"
-                Margin="0 0 20 0">
+        <Border Grid.Column="0" 
+                Style="{StaticResource whiteBorder}" 
+                Margin="15 0 7 0">
             <StackPanel Margin="10">
-
                 <!-- Filter -->
                 <TextBlock Text="Filter by name:" 
                            FontSize="16" 
@@ -28,80 +26,130 @@
                          Margin="0 0 0 10"/>
 
                 <!-- Liste med produkter -->
-                <ListBox ItemsSource="{Binding ProductsView}"
-                         SelectedItem="{Binding SelectedProduct}"
-                         DisplayMemberPath="Name"
-                        
-                         Margin="0 10 0 0"/>
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                          CellStyle="{DynamicResource DataGridCellStyle1}" 
+                          Style="{DynamicResource DataGridStyle1}"
+                          ItemsSource="{Binding ProductsView, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
+                           AutoGenerateColumns="false">        
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Name" IsReadOnly="True" Width="*"
+                                Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Description" IsReadOnly="True" Width="*"
+                                Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Price" IsReadOnly="True" Width="*"
+                                Binding="{Binding Price, StringFormat={}{0:C0}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Size Options" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding SizeOptions}"
+                                              Style="{DynamicResource ComboBox}"
+                                              SelectedIndex="0">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>                           
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Taste Options" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding TasteOptions}"
+                                              Style="{DynamicResource ComboBox}"
+                                              SelectedIndex="0">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </Border>
 
         <!-- HØJRE: CREATE + EDIT -->
-        <Border Grid.Column="1"
-                Style="{StaticResource whiteBorder}"
-                Background="#d1f0e5"
-                Margin="0">
-            <StackPanel Margin="10">
+        <Grid Grid.Column="1">
 
-                <!-- CREATE PRODUCT -->
-                <TextBlock Text="Create Product" 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Style="{StaticResource whiteBorder}"
+                    Margin="7 0 0 7">
+                <StackPanel Margin="10">
+                    <!-- CREATE PRODUCT -->
+                    <TextBlock Text="Create Product" 
                            FontSize="20" 
                            Margin="0 0 0 10"/>
 
-                <TextBlock Text="Name"/>
-                <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="Name"/>
+                    <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 5"/>
 
-                <TextBlock Text="Description"/>
-                <TextBox Text="{Binding NewDescription, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="Description"/>
+                    <TextBox Text="{Binding NewDescription, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 5"/>
 
-                <TextBlock Text="Price"/>
-                <TextBox Text="{Binding NewPrice, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="Price"/>
+                    <TextBox Text="{Binding NewPrice, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 10"/>
 
-                <Button Content="Create"
+                    <Button Content="Create"
                         Style="{StaticResource addButton}"
                         Command="{Binding CreateCommand}"
                         Margin="0 0 0 10"/>
+                </StackPanel>
+            </Border>
 
-                <Separator Margin="0 10"/>
-
-                <!-- EDIT PRODUCT -->
-                <TextBlock Text="Edit Selected Product" 
+            <Border Grid.Row="1"
+                Style="{StaticResource whiteBorder}"
+                Margin="7 7 0 0">
+                <StackPanel Margin="10">
+                    <!-- EDIT PRODUCT -->
+                    <TextBlock Text="Edit Product" 
                            FontSize="20" 
                            Margin="0 0 0 10"/>
 
-                <TextBlock Text="Name"/>
-                <TextBox Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="Name"/>
+                    <TextBox Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 5"/>
 
-                <TextBlock Text="Description"/>
-                <TextBox Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="Description"/>
+                    <TextBox Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 5"/>
 
-                <TextBlock Text="Price"/>
-                <TextBox Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="Price"/>
+                    <TextBox Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 10"/>
 
-                <StackPanel Orientation="Horizontal"
+                    <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             Margin="0 10 0 0">
-                    <Button Content="Update"
+                        <Button Content="Update"
                             Width="100"
                             Margin="5"
                             Style="{StaticResource addButton}"
                             Command="{Binding UpdateCommand}"/>
 
-                    <Button Content="Delete"
+                        <Button Content="Delete"
                             Width="100"
                             Margin="5"
                             Style="{StaticResource addButton}"
                             Command="{Binding DeleteCommand}"/>
+                    </StackPanel>
                 </StackPanel>
-
-            </StackPanel>
-        </Border>
-
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

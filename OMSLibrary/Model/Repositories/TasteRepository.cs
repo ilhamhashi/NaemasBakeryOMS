@@ -112,7 +112,7 @@ public class TasteRepository : IRepository<Taste>
             while (reader.Read())
             {
                 tastes.Add(new Taste
-                    ((int)reader["TasteId"],
+                    ((int)reader["Id"],
                     (string)reader["Name"]));
             }
             return tastes;

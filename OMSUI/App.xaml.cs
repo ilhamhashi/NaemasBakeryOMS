@@ -12,6 +12,7 @@ using OrderManagerLibrary.Services;
 using System.Data;
 using System.IO;
 using System.Windows;
+using Size = OrderManagerLibrary.Model.Classes.Size;
 
 namespace OrderManagerDesktopUI
 {
@@ -38,20 +39,19 @@ namespace OrderManagerDesktopUI
 
             services.AddSingleton<IConfiguration>(config);
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<DashboardViewModel>();
+            services.AddScoped<DashboardViewModel>();
             services.AddScoped<NewOrderViewModel>();
             services.AddScoped<NoteViewModel>();
             services.AddScoped<DeliveryViewModel>();
             services.AddScoped<PaymentViewModel>();
             services.AddScoped<PriceChangeViewModel>();
-            services.AddSingleton<OrdersViewModel>();
-            services.AddSingleton<ProductsViewModel>();
-            services.AddSingleton<CustomersViewModel>();
-            services.AddSingleton<SalesDataViewModel>();
+            services.AddScoped<OrdersViewModel>();
+            services.AddScoped<ProductsViewModel>();
+            services.AddScoped<CustomersViewModel>();
+            services.AddScoped<SalesDataViewModel>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddScoped<IDataAccess, DataAccess>();
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
-            services.AddScoped<IRepository<Delivery>,  DeliveryRepository>();
             services.AddScoped<IRepository<PaymentMethod>, PaymentMethodRepository>();
             services.AddScoped<IRepository<Note>, NoteRepository>();
             services.AddScoped<IRepository<OrderLine>, OrderLineRepository>();
@@ -59,7 +59,12 @@ namespace OrderManagerDesktopUI
             services.AddScoped<IRepository<Payment>, PaymentRepository>();
             services.AddScoped<IRepository<PickUp>, PickUpRepository>();
             services.AddScoped<IRepository<Product>, ProductRepository>();
+            services.AddScoped<IRepository<Size>, SizeRepository>();
+            services.AddScoped<IRepository<Taste>, TasteRepository>();
+            services.AddScoped<IRepository<ProductSize>, ProductSizeRepository>();
+            services.AddScoped<IRepository<ProductTaste>, ProductTasteRepository>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddSingleton<Func<Type, ViewModel>>(_serviceProvider =>
                 viewModelType => (ViewModel)_serviceProvider.GetRequiredService(viewModelType));

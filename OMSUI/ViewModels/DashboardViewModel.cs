@@ -12,6 +12,41 @@ public class DashboardViewModel : ViewModel
     public ObservableCollection<Order> UpcomingOrders { get; private set; } = [];
     public ObservableCollection<Order> PendingPaymentOrders { get; private set; } = [];
 
+    private decimal weeklyRevenue = 220;
+
+    public decimal WeeklyRevenue
+    {
+        get { return weeklyRevenue; }
+        set { weeklyRevenue = value; OnPropertyChanged(); }
+    }
+
+    private decimal monthlyRevenue = 1000;
+
+    public decimal MonthlyRevenue
+    {
+        get { return monthlyRevenue = 1000; }
+        set { monthlyRevenue = value; OnPropertyChanged(); }
+    }
+
+    private Product mostPopularProduct;
+
+    public Product MostPopularProduct
+    {
+        get { return mostPopularProduct; }
+        set { mostPopularProduct = value; OnPropertyChanged(); }
+    }
+
+    private int monthlyOrdersCount = 20;
+
+    public int MonthlyOrdersCount
+    {
+        get { return monthlyOrdersCount; }
+        set { monthlyOrdersCount = value; OnPropertyChanged(); }
+    }
+
+
+
+
     public DashboardViewModel(IOrderService orderService)
     {
         _orderService = orderService;

@@ -26,17 +26,25 @@
                                      UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
-                    <DataGrid x:Name="OrdersDataGrid"
-                                  Margin="15" IsReadOnly="True"
-                                  ItemsSource="{Binding OrdersCollectionView,
-                                  UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedItem="{Binding SelectedOrder, Mode=TwoWay, 
-                                  UpdateSourceTrigger=PropertyChanged}">
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
+                              VerticalAlignment="Stretch">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Order ID" Binding="{Binding OrderId}" Width="*"/>
-                            <DataGridTextColumn Header="Order Date" Binding="{Binding OrderDate}" Width="*"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
-                            <DataGridTextColumn Header="Customer ID" Binding="{Binding CustomerId}" Width="*"/>
+                            <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                                Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Date" IsReadOnly="True" Width="*"
+                                                Binding="{Binding Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
+                                                Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="*"
+                                                Binding="{Binding PickUp.Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Status" IsReadOnly="True" Width="*"
+                                                Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridComboBoxColumn Header="Order Status"  SelectedItemBinding="{Binding Status}" ItemsSource="{Binding Source={StaticResource Enums.OrderStatus}}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

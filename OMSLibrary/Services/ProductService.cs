@@ -2,6 +2,7 @@
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
 using OrderManagerLibrary.Model.Repositories;
+using System.Linq.Expressions;
 
 namespace OrderManagerLibrary.Services;
 public class ProductService : IProductService
@@ -26,9 +27,10 @@ public class ProductService : IProductService
 
         foreach (var product in products)
         {
-            product.Sizes.AddRange((_sizeRepository as SizeRepository).GetByProductId(product.Id));
-            product.Tastes.AddRange((_tasteRepository as TasteRepository).GetByProductId(product.Id));
-
+            product.SizeOptions.AddRange((_sizeRepository as SizeRepository).GetByProductId(product.Id));
+            product.Size = (product.SizeOptions.Count > 0) ? product.SizeOptions[0] : null;
+            product.TasteOptions.AddRange((_tasteRepository as TasteRepository).GetByProductId(product.Id));
+            product.Taste = (product.TasteOptions.Count > 0) ? product.TasteOptions[0] : null;            
         }
 
         return products;

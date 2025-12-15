@@ -1,6 +1,11 @@
 ﻿using OrderManagerLibrary.Model.Interfaces;
 
 namespace OrderManagerLibrary.Model.Classes;
+
+/// <summary>
+/// Represents a payment for an order, including the amount, date,
+/// and payment method.
+/// </summary>
 public class Payment
 {
     public int Id { get; set; }

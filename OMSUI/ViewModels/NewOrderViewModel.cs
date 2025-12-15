@@ -12,15 +12,14 @@ namespace OrderManagerDesktopUI.ViewModels;
 public class NewOrderViewModel : ViewModel
 {
     private readonly IOrderService _orderservice;
-
+    private readonly ProductsViewModel _productsViewModel;
     private Product? selectedProduct;
 	private ICustomer selectedCustomer;
 	private IPaymentMethod? selectedPaymentMethod;
     private Payment? selectedPayment;
-    private OrderStatus orderStatus;
     private int lineNumber;
     private OrderLine? selectedOrderLine;
-    private string noteText = "neworderviewmodel";
+    private string noteText = string.Empty;
     public DateTime PickUpDate
     {
         get { return PickUpDateTime; }
@@ -33,11 +32,11 @@ public class NewOrderViewModel : ViewModel
         set { PickUpDateTime = PickUpDateTime.Date.Add(value.TimeOfDay); OnPropertyChanged(); }
     }
 
-    private DateTime pickUpDateTime;
-    private string address;    
+    private DateTime pickUpDateTime = DateTime.Today.AddDays(1);
+    private string location = "store";    
     private decimal paymentAmount;
-	private bool isDelivery;    
-	private decimal? runningTotal;
+	private bool isDelivery = false;    
+	private decimal runningTotal;
 	private decimal outstandingAmount;
     private decimal? discountTotal;
 
@@ -49,12 +48,12 @@ public class NewOrderViewModel : ViewModel
 
 
 
-    private ObservableCollection<IPaymentMethod> PaymentMethods {  get; set; } = [];
+    private ObservableCollection<IPaymentMethod> PaymentMethods { get; set; } = [];
     private ObservableCollection<Payment> Payments { get; set; } = [];
     public ObservableCollection<OrderLine> OrderLines { get; set; } = [];
-    public ICollectionView OrderLinesCollectionView { get; set; }
-    public ObservableCollection<Product> Products { get; set;}
-    public static ICollectionView? ProductsCollectionView { get; set; }
+    public ICollectionView OrderLinesCollectionView { get; set; } 
+    private ObservableCollection<Product> Products { get; set; } = [];
+    public ICollectionView ProductsView { get; set; }
 
     public ICommand CreateOrderCommand { get; private set; }
     public ICommand AddPaymentCommand {  get; private set; }
@@ -94,11 +93,6 @@ public class NewOrderViewModel : ViewModel
 		get { return selectedPaymentMethod; }
 		set { selectedPaymentMethod = value; OnPropertyChanged(); }
 	}
-    public OrderStatus OrderStatus
-    {
-        get { return orderStatus; }
-        set { orderStatus = value; OnPropertyChanged(); }
-    }
     public int LineNumber
     {
         get { return lineNumber; }
@@ -120,10 +114,10 @@ public class NewOrderViewModel : ViewModel
         get { return pickUpDateTime; }
         set { pickUpDateTime = value; OnPropertyChanged(); }
     }
-    public string Address
+    public string Location
     {
-        get { return address; }
-        set { address = value; OnPropertyChanged(); }
+        get { return location; }
+        set { location = value; OnPropertyChanged(); }
     }
     public decimal PaymentAmount
 	{
@@ -142,7 +136,7 @@ public class NewOrderViewModel : ViewModel
         get { return isDelivery; }
         set { isDelivery = value; OnPropertyChanged(); }
     }
-	public decimal? RunningTotal
+	public decimal RunningTotal
 	{
 		get { return runningTotal; }
 		set { runningTotal = value; OnPropertyChanged(); }
@@ -172,9 +166,10 @@ public class NewOrderViewModel : ViewModel
             OnPropertyChanged();
         }
     }
-    public NewOrderViewModel(IOrderService orderService, INavigationService navigationService)
+    public NewOrderViewModel(IOrderService orderService, ProductsViewModel productsViewModel, INavigationService navigationService)
     {
         _orderservice = orderService;
+        _productsViewModel = productsViewModel;
         OrderLinesCollectionView = CollectionViewSource.GetDefaultView(OrderLines);
         Navigation = navigationService;
         Navigation.NavigateToNested<NoteViewModel>();
@@ -192,30 +187,29 @@ public class NewOrderViewModel : ViewModel
         NavigateToPaymentViewCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<PaymentViewModel>(); }, canExecute => true);
 
-
-        Products = new(_orderservice.ViewProductCatalogue());
-        ProductsCollectionView = CollectionViewSource.GetDefaultView(Products);
-
+        ProductsView = productsViewModel.ProductsView;
         CreateOrderCommand = new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
         AddPaymentCommand = new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
         AddProductToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => CanAddToOrder());
         IncreaseQuantityCommand = new RelayCommand((param) => IncreaseQuantity(param), canExecute => true);
         DecreaseQuantityCommand = new RelayCommand((param) => DecreaseQuantity(param), canExecute => true);
-        AddDiscountCommand = new RelayCommand((param) => AddDiscountToOrderLine(param), canExecute => true);
-        AddPriceIncreaseCommand = new RelayCommand((param) => AddPriceIncreaseToOrderLine(param), canExecute => true);
+        AddDiscountCommand = new RelayCommand(execute => AddDiscountToOrderLine(), canExecute => true);
+        AddPriceIncreaseCommand = new RelayCommand(execute => AddPriceIncreaseToOrderLine(), canExecute => true);
     }
 
     private void AddNewOrder()
     {
-        Order newOrder = new(DateTime.Now, OrderStatus.Draft, selectedCustomer.Id);
+        Customer customer = new Customer(1, "FirstName", "LastName", "Phone");
+        ;
+        IPickUp pickUp = new PickUp(DateTime.Now, IsDelivery, Location);
+        INote note = new Note(NoteText);
+        Order newOrder = new(DateTime.Now, OrderStatus.Draft, customer, pickUp, note);
         if (outstandingAmount == 0)
         {
             newOrder.Status = OrderStatus.FullyPaid;
         }
-        IPickUp collection = HandleDelivery();
-        INote orderNote = new Note(NoteText);
 
-        _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. Payments], collection, orderNote);
+        _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. Payments]);
 
         MessageBox.Show($"Order {newOrder.Id} has been saved succesfully");
         
@@ -231,18 +225,20 @@ public class NewOrderViewModel : ViewModel
         SelectedPayment = null;
         PaymentAmount = decimal.Zero;
         NoteText = string.Empty;
-        PickUpDateTime = DateTime.Now.AddDays(1);
-        Address = string.Empty;
+        PickUpDateTime = DateTime.Today.AddDays(1);
+        isDelivery = false;
+        Location = "store";
+        PriceIncreaseAmount = decimal.Zero;        
     }
 
     private void AddProductToOrder(object rowData)
     {
         Product product = rowData as Product;
-        OrderLine newOrderLine = new(product, 1, product.Price, 0);
+        OrderLine newOrderLine = new(product, 1, product.Price, 0, product.Taste, product.Size);
         ResetLineNumber();
         newOrderLine.LineNumber = OrderLines.Count() + 1;
         OrderLines?.Add(newOrderLine);
-        UpdateRunningTotal(); UpdateDiscountTotal();
+        UpdateRunningTotal(); UpdateDiscountTotal(); UpdateOutstandingAmount();
     }
 
     private void ResetLineNumber()
@@ -257,7 +253,7 @@ public class NewOrderViewModel : ViewModel
 
     private void UpdateRunningTotal()
     {
-        RunningTotal = (OrderLines?.Sum(ol => ol.Price * ol.Quantity));
+        RunningTotal = (OrderLines.Sum(ol => ol.Price * ol.Quantity));
     }
 
     private void UpdateDiscountTotal()
@@ -288,16 +284,16 @@ public class NewOrderViewModel : ViewModel
         OrderLinesCollectionView.Refresh();
     }
 
-    private void AddDiscountToOrderLine(object rowOrderLine)
+    private void AddDiscountToOrderLine()
     {
-        (rowOrderLine as OrderLine).ApplyDiscount();
+        SelectedOrderLine.ApplyDiscount();
         UpdateRunningTotal(); UpdateDiscountTotal();
         OrderLinesCollectionView.Refresh();
     }
 
-    private void AddPriceIncreaseToOrderLine(object rowOrderLine)
+    private void AddPriceIncreaseToOrderLine()
     {
-        (rowOrderLine as OrderLine).IncreasePrice(PriceIncreaseAmount);
+        SelectedOrderLine.IncreasePrice(PriceIncreaseAmount);
         UpdateRunningTotal();
         OrderLinesCollectionView.Refresh();
     }
@@ -315,23 +311,7 @@ public class NewOrderViewModel : ViewModel
     private void UpdateOutstandingAmount()
     {
         decimal totalPaid = Payments.Sum(p => p.Amount);
-        OutstandingAmount = (RunningTotal ?? 0) - totalPaid;
-    }
-
-    private IPickUp HandleDelivery()
-    {
-        IPickUp delivery;
-        IPickUp pickUp;
-        if (IsDelivery) 
-        {
-            delivery = new Delivery (PickUpDateTime, Address);
-            return delivery;
-        }
-        else
-        {
-            pickUp = new PickUp (PickUpDateTime);
-            return pickUp;
-        }
+        OutstandingAmount = RunningTotal - totalPaid;
     }
 
 }

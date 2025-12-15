@@ -17,17 +17,17 @@ public class Order
     public List<Payment> Payments { get; set; }
 
     public int CustomerId { get; set; }
-    public string CustomerFullName { get; set; }
-    public decimal OutstandingAmount { get; set; }
+    public int PickUpId { get; set; }
+    public int NoteId { get; set; }
 
     public Order(int id, DateTime date, OrderStatus status, int customerId, int pickUpId, int noteId)
     {
         Id = id;
         Date = date;
         Status = status;
-        Customer.Id = customerId;
-        PickUp.Id = pickUpId;
-        Note.Id = noteId;
+        CustomerId = customerId;
+        PickUpId = pickUpId;
+        NoteId = noteId;
     }
 
     /// <summary>
@@ -47,26 +47,26 @@ public class Order
     /// OrderId will be generated automatically when inserted.
     /// </summary>
 
-    public Order(DateTime orderDate, OrderStatus status, int customerId)
+    public Order(DateTime orderDate, OrderStatus status, Customer customer, IPickUp pickUp, INote note)
     {
         Date = orderDate;
         Status = status;
-        CustomerId = customerId;
+        Customer = customer;
+        PickUp = pickUp;
+        Note = note;
     }
 
-    public Order(int orderId, DateTime orderDate, string customerFullName, DateTime pickUp, OrderStatus status)
+    public Order(int orderId, DateTime orderDate, OrderStatus status)
     {
         Id = orderId;
         Date = orderDate;
-        CustomerFullName = customerFullName;
-        PickUp.Date = pickUp;
         Status = status;
     }
 
-    public Order(int orderId, string customerFullName, decimal outstandingAmount)
+    public Order(int orderId, string firstName, string lastName, decimal outstandingAmount)
     {
         Id = orderId;
-        CustomerFullName = customerFullName;
-        OutstandingAmount = outstandingAmount;
+        Customer.FirstName = firstName;
+        Customer.LastName = lastName;
     }
 }

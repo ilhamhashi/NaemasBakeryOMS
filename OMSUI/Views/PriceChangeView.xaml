@@ -40,14 +40,12 @@
                 HorizontalAlignment="Center"
                 Content="Reduce Price" 
                 Style="{StaticResource addButton}"
-                Command="{Binding DataContext.AddDiscountCommand}"
-                CommandParameter="{Binding}"/>
+                Command="{Binding DataContext.AddDiscountCommand}"/>
             <Button
                 HorizontalAlignment="Center"
                 Content="Increase Price" 
                 Style="{StaticResource addButton}"
-                Command="{Binding DataContext.AddPriceIncreaseCommand}"
-                CommandParameter="{Binding}"/>
+                Command="{Binding DataContext.AddPriceIncreaseCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -3,7 +3,9 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
 
@@ -40,9 +42,9 @@ public class ProductsViewModel : ViewModel
     }
 
     // Commands
-    public RelayCommand CreateCommand { get; set; }
-    public RelayCommand UpdateCommand { get; set; }
-    public RelayCommand DeleteCommand { get; set; }
+    public ICommand CreateCommand { get; set; }
+    public ICommand UpdateCommand { get; set; }
+    public ICommand DeleteCommand { get; set; }
 
     public ProductsViewModel(IProductService productService)
     {
@@ -56,7 +58,7 @@ public class ProductsViewModel : ViewModel
         ProductsView.Filter = FilterProducts;
 
         // Commands
-        CreateCommand = new RelayCommand(o => CreateProduct());
+        CreateCommand = new RelayCommand(o => CreateProduct(), o => true);
         UpdateCommand = new RelayCommand(o => UpdateProduct(), o => SelectedProduct != null);
         DeleteCommand = new RelayCommand(o => DeleteProduct(), o => SelectedProduct != null);
     }
@@ -76,8 +78,10 @@ public class ProductsViewModel : ViewModel
     {
         var p = new Product(NewName, NewDescription, NewPrice);
 
-        p.Id = _productService.CreateProduct(p);
+        _productService.CreateProduct(p);
         Products.Add(p);
+
+        MessageBox.Show($"You have succesfully created {p.Name}.");
 
         // Clear fields
         NewName = "";
@@ -90,17 +94,13 @@ public class ProductsViewModel : ViewModel
 
     private void UpdateProduct()
     {
-        if (SelectedProduct == null) return;
-
         _productService.UpdateProduct(SelectedProduct);
         ProductsView.Refresh();
     }
 
     private void DeleteProduct()
     {
-        if (SelectedProduct == null) return;
-
-        _productService.DeleteProduct(SelectedProduct.Id);
+        _productService.RemoveProduct(SelectedProduct.Id);
         Products.Remove(SelectedProduct);
     }
 }
