@@ -79,7 +79,7 @@ public class OrderService : IOrderService
         return pendingPaymentOrders;
     }
 
-    public void CreateOrder(Order order, List<OrderLine> orderLines, List<Payment> payments)
+    public Order CreateOrder(Order order, List<OrderLine> orderLines, List<Payment> payments)
     {
         using (SqlConnection connection = _db.GetConnection())
         {
@@ -88,15 +88,13 @@ public class OrderService : IOrderService
             {
                 try
                 {
-
                     order.PickUp.Id = _pickUpRepository.Insert(order.PickUp);
                     order.Note.Id = _noteRepository.Insert(order.Note);
                     order.Id = _orderRepository.Insert(order);
 
-                    // Opret ordrelinjer
                     foreach (var line in orderLines)
                     {
-                        line.Order = order; // Sæt OrderId for ordrelinjen
+                        line.Order = order;
                         _orderLineService.CreateOrderLine(line);
                     }
 
@@ -105,14 +103,14 @@ public class OrderService : IOrderService
                         payment.Order = order;
                     }
 
-                    // Commit transaction
                     transaction.Commit();
+
+                    return order;
                 }
                 catch (Exception)
                 {
-                    // Rul tilbage transaktionen ved fejl
                     transaction.Rollback();
-                    throw; // Re-throw exception to handle it upstream
+                    throw;
                 }
 
             }

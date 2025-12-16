@@ -1,5 +1,7 @@
 ﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
+using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Services;
 using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -111,7 +113,17 @@ public class ProductsViewModel : ViewModel
 
     private void DeleteProduct(object rowData)
     {
-        _productService.RemoveProduct((rowData as Product).Id);
-        Products.Remove(rowData as Product);
+        var product = rowData as Product;
+        MessageBoxResult result = MessageBox.Show($"Do you want to remove {product.Name}?",
+                                  "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            _productService.RemoveProduct(product.Id);
+            Products.Remove(product);
+
+            MessageBox.Show($"{product.Name} is removed.", "Completed",
+                       MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

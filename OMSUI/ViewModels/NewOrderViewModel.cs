@@ -1,6 +1,7 @@
 ﻿using OrderManagerDesktopUI.Core;
 using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Model.Interfaces;
+using OrderManagerLibrary.Services;
 using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,48 +13,40 @@ namespace OrderManagerDesktopUI.ViewModels;
 public class NewOrderViewModel : ViewModel
 {
     private readonly IOrderService _orderservice;
-    private Product? selectedProduct;
-	private ICustomer selectedCustomer;
-	private IPaymentMethod? selectedPaymentMethod;
-    private Payment? selectedPayment;
-    private int lineNumber;
-    private OrderLine? selectedOrderLine;
-    private string noteText = string.Empty;
-    public DateTime PickUpDate
-    {
-        get { return PickUpDateTime; }
-        set { PickUpDateTime = value.Date.Add(PickUpDateTime.TimeOfDay); OnPropertyChanged(); }
-    }
-
-    public DateTime PickUpTime
-    {
-        get { return PickUpDateTime; }
-        set { PickUpDateTime = PickUpDateTime.Date.Add(value.TimeOfDay); OnPropertyChanged(); }
-    }
-
-    private DateTime pickUpDateTime = DateTime.Today.AddDays(1);
-    private string location = "store";    
-    private decimal paymentAmount;
-	private bool isDelivery = false;    
-	private decimal runningTotal;
-	private decimal outstandingAmount;
-    private decimal? discountTotal;
-
-    public decimal? DiscountTotal
-    {
-        get { return discountTotal; }
-        set { discountTotal = value; OnPropertyChanged(); }
-    }
-
-
 
     private ObservableCollection<IPaymentMethod> _paymentMethods { get; } = [];
-    private ObservableCollection<Payment> _payments { get; set; } = [];
-    private ObservableCollection<OrderLine> OrderLines { get; set; } = [];
+    private ObservableCollection<Payment> _payments { get; } = [];
+    private ObservableCollection<OrderLine> OrderLines { get; } = [];
     private ObservableCollection<Product> _products { get; }
-    public ICollectionView ProductsCollectionView { get;}
-    public ICollectionView OrderLinesCollectionView { get; } 
-    
+    private ObservableCollection<Customer> _customers { get; }
+    public ICollectionView ProductsCollectionView { get; }
+    public ICollectionView CustomersCollectionView { get; }
+    public ICollectionView OrderLinesCollectionView { get; }
+
+    private INavigationService _navigation;
+    public INavigationService Navigation
+    {
+        get => _navigation;
+        set
+        {
+            _navigation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Product selectedProduct;
+    private ICustomer selectedCustomer;
+    private IPaymentMethod? selectedPaymentMethod;
+    private DateTime pickUpDateTime = DateTime.Today.AddDays(1);
+    private OrderLine? selectedOrderLine;
+    private bool isDelivery = false;
+    private string location = "Store";
+    private string noteText = string.Empty;
+    private decimal runningTotal;
+    private decimal discountTotal;
+    private decimal paymentAmount;
+    private decimal outstandingAmount;
+    private decimal priceIncreaseAmount;
 
     public ICommand CreateOrderCommand { get; }
     public ICommand AddPaymentCommand {  get; }
@@ -69,66 +62,54 @@ public class NewOrderViewModel : ViewModel
     public ICommand NavigateToPaymentViewCommand { get; }
     public ICommand NavigateToDeliveryViewCommand { get; }
 
-    private bool CanAddNewOrder() => true; // Placeholder for actual logic
-    private bool CanCancelNewOrder() => true; // Placeholder for actual logic
-    private bool CanContinueToPayment() => true; // Placeholder for actual logic
-    private bool CanGoBackToOrderDetails() => true; // Placeholder for actual logic
+    private bool CanAddNewOrder() => true; 
+    private bool CanCancelNewOrder() => true;
+    private bool CanContinueToPayment() => true;
+    private bool CanGoBackToOrderDetails() => true;
     private bool CanAddToOrder() => true;
-    private bool CanSelectProduct() => true; // Placeholder for actual logic
+    private bool CanSelectProduct() => true;
     private bool CanAddPaymentToOrder() => SelectedPaymentMethod != null && PaymentAmount > 0;
 
-   
-    public Product? SelectedProduct
+    public Product SelectedProduct
     {
         get { return selectedProduct; }
         set { selectedProduct = value; OnPropertyChanged(); }
     }
-     public ICustomer SelectedCustomer
+
+    public ICustomer SelectedCustomer
     {
         get { return selectedCustomer; }
         set { selectedCustomer = value; OnPropertyChanged(); }
     }
-	public IPaymentMethod? SelectedPaymentMethod
-	{
-		get { return selectedPaymentMethod; }
-		set { selectedPaymentMethod = value; OnPropertyChanged(); }
-	}
-    public int LineNumber
+
+    public IPaymentMethod? SelectedPaymentMethod
     {
-        get { return lineNumber; }
-        set { lineNumber = value; OnPropertyChanged(); }
-    }
-    public OrderLine? SelectedOrderLine
-    {
-        get { return selectedOrderLine; }
-        set { selectedOrderLine = value; OnPropertyChanged(); }
+        get { return selectedPaymentMethod; }
+        set { selectedPaymentMethod = value; OnPropertyChanged(); }
     }
 
-    public string NoteText
-    {
-        get { return noteText; }
-        set { noteText = value; OnPropertyChanged(); }
-    }
     public DateTime PickUpDateTime
     {
         get { return pickUpDateTime; }
         set { pickUpDateTime = value; OnPropertyChanged(); }
     }
-    public string Location
-    {
-        get { return location; }
-        set { location = value; OnPropertyChanged(); }
-    }
-    public decimal PaymentAmount
-	{
-		get { return paymentAmount; }
-		set { paymentAmount = value; OnPropertyChanged(); }
-	}
 
-    public Payment? SelectedPayment
+    public DateTime PickUpDate
     {
-        get { return selectedPayment; }
-        set { selectedPayment = value; }
+        get { return PickUpDateTime; }
+        set { PickUpDateTime = value.Date.Add(PickUpDateTime.TimeOfDay); OnPropertyChanged(); }
+    }
+
+    public DateTime PickUpTime
+    {
+        get { return PickUpDateTime; }
+        set { PickUpDateTime = PickUpDateTime.Date.Add(value.TimeOfDay); OnPropertyChanged(); }
+    }
+
+    public OrderLine? SelectedOrderLine
+    {
+        get { return selectedOrderLine; }
+        set { selectedOrderLine = value; OnPropertyChanged(); }
     }
 
     public bool IsDelivery
@@ -136,18 +117,41 @@ public class NewOrderViewModel : ViewModel
         get { return isDelivery; }
         set { isDelivery = value; OnPropertyChanged(); }
     }
+
+    public string Location
+    {
+        get { return location; }
+        set { location = value; OnPropertyChanged(); }
+    }
+        public string NoteText
+    {
+        get { return noteText; }
+        set { noteText = value; OnPropertyChanged(); }
+    }
+
 	public decimal RunningTotal
 	{
 		get { return runningTotal; }
 		set { runningTotal = value; OnPropertyChanged(); }
 	}
-   public decimal OutstandingAmount
-	{
-		get { return outstandingAmount; }
-		set { outstandingAmount = value; OnPropertyChanged(); }
-	}
 
-    private decimal priceIncreaseAmount;
+    public decimal DiscountTotal
+    {
+        get { return discountTotal; }
+        set { discountTotal = value; OnPropertyChanged(); }
+    }
+
+    public decimal PaymentAmount
+    {
+        get { return paymentAmount; }
+        set { paymentAmount = value; OnPropertyChanged(); }
+    }
+
+    public decimal OutstandingAmount
+    {
+        get { return outstandingAmount; }
+        set { outstandingAmount = value; OnPropertyChanged(); }
+    }
 
     public decimal PriceIncreaseAmount
     {
@@ -155,22 +159,13 @@ public class NewOrderViewModel : ViewModel
         set { priceIncreaseAmount = value; OnPropertyChanged(); }
     }
 
-
-    private INavigationService _navigation;
-    public INavigationService Navigation
-    {
-        get => _navigation;
-        set
-        {
-            _navigation = value;
-            OnPropertyChanged();
-        }
-    }
-    public NewOrderViewModel(IOrderService orderService, IProductService productService, INavigationService navigationService)
+    public NewOrderViewModel(IOrderService orderService, IProductService productService, ICustomerService customerService, INavigationService navigationService)
     {
         _orderservice = orderService;
         _products = new ObservableCollection<Product>(productService.GetAllProducts());
+        _customers = new ObservableCollection<Customer>(customerService.GetAllCustomers());
         ProductsCollectionView = CollectionViewSource.GetDefaultView(_products);
+        CustomersCollectionView = CollectionViewSource.GetDefaultView(_customers);
         OrderLinesCollectionView = CollectionViewSource.GetDefaultView(OrderLines);
         Navigation = navigationService;
         Navigation.NavigateToNested<NoteViewModel>();
@@ -201,8 +196,7 @@ public class NewOrderViewModel : ViewModel
     private void AddNewOrder()
     {
         Customer customer = new Customer(1, "FirstName", "LastName", "Phone");
-        ;
-        PickUp pickUp = new PickUp(DateTime.Now, IsDelivery, Location);
+        PickUp pickUp = new PickUp(PickUpDateTime, IsDelivery, Location);
         Note note = new Note(NoteText);
         Order newOrder = new(DateTime.Now, OrderStatus.Draft, customer, pickUp, note);
         if (outstandingAmount == 0)
@@ -210,11 +204,19 @@ public class NewOrderViewModel : ViewModel
             newOrder.Status = OrderStatus.FullyPaid;
         }
 
-        _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. _payments]);
+        MessageBoxResult result = MessageBox.Show($"Please confirm order for {customer.FirstName} {customer.LastName}?",
+                                  "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-        MessageBox.Show($"Order {newOrder.Id} has been saved succesfully");
+        if (result == MessageBoxResult.Yes)
+        {
+            newOrder = _orderservice.CreateOrder(newOrder, [.. OrderLines], [.. _payments]);
+
+            MessageBox.Show($"Order {newOrder.Id} has been created!", "Completed",
+                       MessageBoxButton.OK, MessageBoxImage.Information);
+
+            ResetFieldsAfterOrderCompletion();
+        }
         
-        ResetFieldsAfterOrderCompletion();
     }
 
     private void ResetFieldsAfterOrderCompletion()
@@ -223,12 +225,11 @@ public class NewOrderViewModel : ViewModel
         SelectedOrderLine = null;
         SelectedPaymentMethod = null;
         _payments.Clear();
-        SelectedPayment = null;
         PaymentAmount = decimal.Zero;
         NoteText = string.Empty;
         PickUpDateTime = DateTime.Today.AddDays(1);
         isDelivery = false;
-        Location = "store";
+        Location = "Store";
         PriceIncreaseAmount = decimal.Zero;        
     }
 
@@ -259,7 +260,7 @@ public class NewOrderViewModel : ViewModel
 
     private void UpdateDiscountTotal()
     {
-        DiscountTotal = (OrderLines?.Sum(ol => ol.Discount * ol.Quantity));
+        DiscountTotal = (OrderLines.Sum(ol => ol.Discount * ol.Quantity));
     }
 
     private void IncreaseQuantity(object rowOrderLine)

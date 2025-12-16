@@ -80,7 +80,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" Margin="15 5 0 0">
-                    <TextBlock Text="Order #" 
+                    <TextBlock Text="Details - Order #" 
                                FontSize="18"/>
                     <TextBlock Text="{Binding SelectedOrder.Id, UpdateSourceTrigger=PropertyChanged}" 
                                FontSize="18"/>

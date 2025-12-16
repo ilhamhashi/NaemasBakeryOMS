@@ -14,9 +14,14 @@
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65*"/>
+            <RowDefinition Height="35*"/>
+        </Grid.RowDefinitions>
+
         <Border Grid.Column="0"
         Style="{StaticResource whiteBorder}" 
-        Margin="15 0 7 0">
+        Margin="15 0 7 7">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10*" />
@@ -52,7 +57,7 @@
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
-                          ItemsSource="{Binding Customers, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding CustomerCollectionView, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" 
@@ -78,8 +83,26 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
-                
-                <!-- Orders belonging to selected customer from list -->
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" 
+                Style="{StaticResource whiteBorder}" 
+                Margin="15 7 7 0">
+            <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15*"/>
+                            <RowDefinition Height="85*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Margin="15 5 0 0">
+                            <TextBlock Text="Orders | Customer #" 
+                               FontSize="18"/>
+                            <TextBlock Text="{Binding SelectedCustomer.Id, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="18"/>
+                        </StackPanel>
+
+                        <!-- Orders belonging to selected customer from list -->
                 <ScrollViewer VerticalScrollBarVisibility="auto" Grid.Row="3">
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
@@ -102,7 +125,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.RowSpan="2" Grid.Column="1">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

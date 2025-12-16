@@ -10,6 +10,6 @@ namespace OrderManagerLibrary.Services.Interfaces
         IEnumerable<Order> GetAllOrdersByCustomer(Customer customer);
         IEnumerable<Order> GetUpcomingOrders();
         IEnumerable<Order> GetPendingPaymentOrders();
-        void CreateOrder(Order order, List<OrderLine> orderLines,List<Payment> payments);
+        Order CreateOrder(Order order, List<OrderLine> orderLines,List<Payment> payments);
     }
 }

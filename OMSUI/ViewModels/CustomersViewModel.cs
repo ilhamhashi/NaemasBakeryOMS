@@ -4,14 +4,16 @@ using OrderManagerLibrary.Model.Classes;
 using OrderManagerLibrary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace OrderManagerDesktopUI.ViewModels;
 public class CustomersViewModel : ViewModel
 {
     private readonly ICustomerService _customerService;
-    public ObservableCollection<Customer> Customers { get; set; } = new();
-    public static ICollectionView CustomersCollectionView { get; set; }
+    private ObservableCollection<Customer> Customers { get; }
+    public ICollectionView CustomerCollectionView { get; }
 
     private Customer _selectedCustomer;
     public Customer SelectedCustomer
@@ -53,23 +55,26 @@ public class CustomersViewModel : ViewModel
         }
     }
 
-    public ICommand CreateCustomerCommand { get; private set; }
-    public ICommand UpdateCustomerCommand { get; private set; }
-    public ICommand RemoveCustomerCommand { get; private set; }
+    public ICommand CreateCustomerCommand { get; }
+    public ICommand UpdateCustomerCommand { get; }
+    public ICommand RemoveCustomerCommand { get; }
 
     public CustomersViewModel(ICustomerService customerService)
     {
         _customerService = customerService;
         Customers = new ObservableCollection<Customer>(_customerService.GetAllCustomers());
+        CustomerCollectionView = CollectionViewSource.GetDefaultView(Customers);
 
         CreateCustomerCommand = new RelayCommand(execute => CreateCustomer(), canExecute => CanCreateCustomer());
-        UpdateCustomerCommand = new RelayCommand(execute => UpdateCustomer(), canExecute => true);
+        UpdateCustomerCommand = new RelayCommand(execute => UpdateCustomer(), canExecute => CanUpdateCustomer());
         RemoveCustomerCommand = new RelayCommand((param) => RemoveCustomer(param), canExecute => true);
     }
 
     private bool CanCreateCustomer() => (!string.IsNullOrWhiteSpace(FirstName) &&
                                          !string.IsNullOrWhiteSpace(LastName) &&
                                          !string.IsNullOrWhiteSpace(PhoneNumber));
+
+    private bool CanUpdateCustomer() => SelectedCustomer != null;
 
     private void CreateCustomer()
     {
@@ -94,15 +99,25 @@ public class CustomersViewModel : ViewModel
 
     private void RemoveCustomer(object rowData)
     {
-        _customerService.RemoveCustomer((rowData as Customer).Id);
-        Customers.Remove(rowData as Customer);
+        var customer = rowData as Customer;
+        MessageBoxResult result = MessageBox.Show($"Do you want to remove {customer.FirstName} {customer.LastName}?",
+                                  "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            _customerService.RemoveCustomer(customer.Id);
+            Customers.Remove(customer);
+
+            MessageBox.Show($"{customer.FirstName} {customer.LastName} is removed.", "Completed", 
+                       MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 
     private void FilterCustomers()
     {
         if (!string.IsNullOrWhiteSpace(SearchTerm))
         {
-            CustomersCollectionView.Filter = c =>
+            CustomerCollectionView.Filter = c =>
             {
                 if (c is Customer customer)
                 {
