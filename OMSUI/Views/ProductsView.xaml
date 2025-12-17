@@ -24,18 +24,12 @@
                 </Grid.RowDefinitions>
 
                 <!-- Search field that filters product list -->
-                <StackPanel Grid.Row="0" 
-                            Orientation="Horizontal" 
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="Search product (id, name, description)" 
-                               FontSize="11"
-                               Margin="10"/>
-                    <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
-                             VerticalContentAlignment="Center"
-                             Width="200"
-                             Height="30"/>
-                </StackPanel>
+                <TextBox 
+                         Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalContentAlignment="Center"
+                         HorizontalAlignment="Right"
+                         Margin="5"
+                         Style="{StaticResource SearchTextbox}"/>
 
                 <TextBlock Grid.Row="1" 
                            Text="Products"
@@ -138,6 +132,20 @@
                     <TextBlock Text="Price"/>
                     <TextBox Text="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0 0 0 10"/>
+
+                    <ListBox ItemsSource="{Binding SizesCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                                 SelectionMode="Multiple"
+                                 DisplayMemberPath="Name"
+                                 Height="30" Width="200"/>
+
+                    <Button Content="Add size options"
+                        Style="{StaticResource addButton}"
+                        Command="{Binding AddSizeOptionsCommand}"
+                        Margin="0 0 0 10"/>
+
+                    <ListBox ItemsSource="{Binding SelectedProduct.Sizes, UpdateSourceTrigger=PropertyChanged}" 
+                             DisplayMemberPath="Name"
+                             Height="30" Width="200"/>
 
                     <Button Content="Create"
                         Style="{StaticResource addButton}"

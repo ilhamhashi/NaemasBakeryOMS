@@ -37,7 +37,7 @@
                                 Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Name" IsReadOnly="True" Width="*"
                                 Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Starting Price" IsReadOnly="True" Width="*"
+                        <DataGridTextColumn Header="Price" IsReadOnly="True" Width="*"
                                 Binding="{Binding Price, StringFormat={}{0:C2}, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTemplateColumn Header="Size" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
@@ -158,9 +158,9 @@
 
                     <Grid Margin="10">
                         <ComboBox x:Name="selectCustomer"
-                              ItemsSource="{Binding CustomersCollectionView, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{DynamicResource ComboBox}">
+                                  ItemsSource="{Binding CustomersCollectionView, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{DynamicResource ComboBox}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock>

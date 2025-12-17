@@ -18,54 +18,80 @@
                 <ColumnDefinition Width="65*"/>
                 <ColumnDefinition Width="35*"/>
             </Grid.ColumnDefinitions>
+
             <Border Style="{StaticResource whiteBorder}" Margin="15 0 7 7">
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="92*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15 5 0 0">
+                        <TextBlock Text="Upcoming Orders" 
+                               FontSize="18"/>
+                        <TextBlock Text="{Binding SelectedOrder.Id, UpdateSourceTrigger=PropertyChanged}" 
+                               FontSize="18"/>
+                    </StackPanel>
+                    
+                    <DataGrid Grid.Row="1" RowStyle="{DynamicResource DataGridRowStyle1}" 
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
                           ItemsSource="{Binding UpcomingOrders, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
-                          VerticalAlignment="Stretch">      
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                          VerticalAlignment="Stretch">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
                         Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Date" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Date" IsReadOnly="True" Width="auto"
                         Binding="{Binding Date, StringFormat={}{0:d}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="auto">
-                            <DataGridTextColumn.Binding>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Customer.FirstName" />
-                                    <Binding Path="Customer.LastName" />
-                                </MultiBinding>
-                            </DataGridTextColumn.Binding>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="auto">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Customer.FirstName" />
+                                        <Binding Path="Customer.LastName" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="PickUp" IsReadOnly="True" Width="auto"
                         Binding="{Binding PickUp.Date, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Status" IsReadOnly="True" Width="auto"
+                            <DataGridTextColumn Header="Status" IsReadOnly="True" Width="auto"
                         Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
-                        
-                    </DataGrid.Columns>
-                </DataGrid>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </Border>
             
             <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="7 0 0 7">
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-              CellStyle="{DynamicResource DataGridCellStyle1}" 
-              Style="{DynamicResource DataGridStyle1}"
-              ItemsSource="{Binding PendingPaymentOrders, UpdateSourceTrigger=PropertyChanged}"
-              SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
-              VerticalAlignment="Stretch">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
-            Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
-            Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Amount" IsReadOnly="True" Width="*"
-            Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="92*"/>
+                    </Grid.RowDefinitions>
 
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15 5 0 0">
+                        <TextBlock Text="Pending Payment" FontSize="18"/>
+                        <TextBlock Text="{Binding SelectedOrder.Id, UpdateSourceTrigger=PropertyChanged}" FontSize="18"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              ItemsSource="{Binding PendingPaymentOrders, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
+                              VerticalAlignment="Stretch">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order" IsReadOnly="True" CanUserResize="False" Width="auto" 
+                                                Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Customer" IsReadOnly="True" Width="*"
+                                                Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Width="*"
+                                                Binding="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </Border>
         </Grid>
 

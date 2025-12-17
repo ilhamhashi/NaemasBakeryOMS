@@ -12,6 +12,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/MenuButtonTheme.xaml"/>
+                <ResourceDictionary Source="/Themes/SearchBoxTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type TypeName=vm:NewOrderViewModel}">
@@ -131,7 +132,7 @@
                 </Grid>
                 <ControlTemplate.Triggers>
                     <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                        <Setter TargetName="Border" Property="Background" Value="#e0f5ee" />
+                        <Setter TargetName="Border" Property="Background" Value="Transparent" />
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
                         <Setter TargetName="Border" Property="Background" Value="White" />
@@ -533,8 +534,8 @@
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush>
-                            <GradientStop Color="#cae3db" Offset="0.8"/>
-                            <GradientStop Color="#e0f5ee" Offset="0"/>
+                            <GradientStop Color="#bae8d8" Offset="0.9"/>
+                            <GradientStop Color="#c7ede0" Offset="0"/>
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
@@ -552,7 +553,6 @@
                 </Setter>
             </Style>
 
-
             <Style x:Key="ComboBoxSelectOverlay" TargetType="TextBlock">
                 <Setter Property="Grid.ZIndex" Value="10"/>
                 <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
@@ -560,14 +560,12 @@
                 <Setter Property="IsHitTestVisible" Value="False"/>
                 <Setter Property="Visibility" Value="Hidden"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="HorizontalAlignment" Value="Center" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding}" Value="{x:Null}">
                         <Setter Property="Visibility" Value="Visible"/>
                     </DataTrigger>
                 </Style.Triggers>
-            </Style>
-            
+            </Style>            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

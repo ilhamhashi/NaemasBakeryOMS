@@ -1,8 +1,7 @@
 ﻿namespace OrderManagerLibrary.Model.Classes;
 
 /// <summary>
-/// Represents a single line in an order, including the product,
-/// quantity, price, and any discount applied
+/// Represents a productline in an order
 /// </summary>
 public class OrderLine
 {

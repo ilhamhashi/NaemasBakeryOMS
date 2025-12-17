@@ -35,7 +35,7 @@ public class NewOrderViewModel : ViewModel
     }
 
     private Product selectedProduct;
-    private ICustomer selectedCustomer;
+    private Customer selectedCustomer;
     private IPaymentMethod? selectedPaymentMethod;
     private DateTime pickUpDateTime = DateTime.Today.AddDays(1);
     private OrderLine? selectedOrderLine;
@@ -62,12 +62,8 @@ public class NewOrderViewModel : ViewModel
     public ICommand NavigateToPaymentViewCommand { get; }
     public ICommand NavigateToDeliveryViewCommand { get; }
 
-    private bool CanAddNewOrder() => true; 
-    private bool CanCancelNewOrder() => true;
-    private bool CanContinueToPayment() => true;
-    private bool CanGoBackToOrderDetails() => true;
+    private bool CanAddNewOrder() => SelectedCustomer != null && OrderLines.Count() != 0; 
     private bool CanAddToOrder() => true;
-    private bool CanSelectProduct() => true;
     private bool CanAddPaymentToOrder() => SelectedPaymentMethod != null && PaymentAmount > 0;
 
     public Product SelectedProduct
@@ -76,7 +72,7 @@ public class NewOrderViewModel : ViewModel
         set { selectedProduct = value; OnPropertyChanged(); }
     }
 
-    public ICustomer SelectedCustomer
+    public Customer SelectedCustomer
     {
         get { return selectedCustomer; }
         set { selectedCustomer = value; OnPropertyChanged(); }
@@ -195,16 +191,15 @@ public class NewOrderViewModel : ViewModel
 
     private void AddNewOrder()
     {
-        Customer customer = new Customer(1, "FirstName", "LastName", "Phone");
         PickUp pickUp = new PickUp(PickUpDateTime, IsDelivery, Location);
         Note note = new Note(NoteText);
-        Order newOrder = new(DateTime.Now, OrderStatus.Draft, customer, pickUp, note);
+        Order newOrder = new(DateTime.Now, OrderStatus.Draft, SelectedCustomer, pickUp, note);
         if (outstandingAmount == 0)
         {
             newOrder.Status = OrderStatus.FullyPaid;
         }
 
-        MessageBoxResult result = MessageBox.Show($"Please confirm order for {customer.FirstName} {customer.LastName}?",
+        MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} {SelectedCustomer.LastName}?",
                                   "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
         if (result == MessageBoxResult.Yes)
@@ -215,8 +210,7 @@ public class NewOrderViewModel : ViewModel
                        MessageBoxButton.OK, MessageBoxImage.Information);
 
             ResetFieldsAfterOrderCompletion();
-        }
-        
+        }        
     }
 
     private void ResetFieldsAfterOrderCompletion()
