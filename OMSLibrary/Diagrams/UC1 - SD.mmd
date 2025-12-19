@@ -31,7 +31,7 @@ OrderRepository->>OrderService: return Id
 loop For each OrderLine 
 	OrderService ->> OrderLineService: CreateOrderLine(line)
 	OrderLineService ->> OrderLineRepository: Insert(orderLine) 
-	OrderLineRepository ->> Database: EXEC spOrderLine_Insert(OrderId, ProductId, LineNumber, ...) 
+	OrderLineRepository ->> Database: EXEC spOrderLine_Insert(ProductId, OrderId, LineNumber, ...) 
 	Database ->> OrderLineRepository: Confirmation 
 	OrderLineRepository ->> OrderLineService: Confirmation 
 	OrderLineService ->> OrderService: Confirmation 

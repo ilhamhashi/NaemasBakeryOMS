@@ -42,9 +42,9 @@ public class Order
     public List<Payment> Payments { get; set; }
 
 
-
     /// <summary>
-    /// Constructor used for adding a new order when Id is not known. 
+    /// Constructor used for adding a 
+    /// new order when Id is not known. 
     /// </summary>
     public Order(DateTime orderDate, Customer customer, PickUp pickUp, Note note)
     {

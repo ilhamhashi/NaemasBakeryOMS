@@ -1,8 +1,8 @@
 ﻿namespace OrderManagerLibrary.Model.Classes;
 
-
 /// <summary>
-/// Represents the different statuses an order can have in the bakery system.
+/// Represents the different statuses an order 
+/// can have in the system.
 /// </summary>
 public enum OrderStatus
 {

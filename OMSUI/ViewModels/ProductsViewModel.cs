@@ -73,14 +73,14 @@ public class ProductsViewModel : ViewModelBase
         set { _selectedTaste = value; OnPropertyChanged(); }
     }
 
-    private string searchTerm;
+    private string searchTerm = string.Empty;
     public string SearchTerm
     {
-        get => searchTerm;
+        get { return searchTerm; }
         set
         {
             searchTerm = value;
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(ProductFilter));
             ProductsCollectionView.Refresh();
         }
     }
@@ -98,7 +98,7 @@ public class ProductsViewModel : ViewModelBase
         _productService = productService;
         _products = new ObservableCollection<Product>(_productService.GetAllProducts().Where(p => !p.IsArchived));
         ProductsCollectionView = CollectionViewSource.GetDefaultView(_products);
-        ProductsCollectionView.Filter = FilterProducts;
+        ProductsCollectionView.Filter = ProductFilter;
         AvailableSizes = new ObservableCollection<Size>(_productService.GetAllSizes());
         AvailableTastes = new ObservableCollection<Taste>(_productService.GetAllTastes());
         CreateProductCommand = new RelayCommand(execute => CreateProduct(), canExecute => true);
@@ -138,14 +138,15 @@ public class ProductsViewModel : ViewModelBase
         SelectedTaste = null;
     }
 
-    private bool FilterProducts(object obj)
+    private bool ProductFilter(object obj)
     {
-        if (obj is not Product p) return false;
-
-        if (string.IsNullOrWhiteSpace(SearchTerm))
-            return true;
-
-        return p.Name.ToLower().Contains(SearchTerm.ToLower());
+        if (obj is Product product)
+        {
+            return product.Name.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                   product.Description.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                   product.Id.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
+        }
+        return false;
     }
 
     private void CreateProduct()

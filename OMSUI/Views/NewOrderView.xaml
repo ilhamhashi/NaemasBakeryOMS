@@ -10,7 +10,7 @@
         d:DesignHeight="800" d:DesignWidth="1200">
 
     <Grid>
-        <!-- Definerer kolonner -->
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="30*"/>
@@ -244,7 +244,7 @@
                 </ScrollViewer>
             </Border>
 
-            <!-- Running Total -->
+            <!-- Running Total section -->
             <Border Grid.Row="2" Background="#e0f5ee" CornerRadius="3">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
@@ -270,14 +270,16 @@
             </Border>
 
             <Border Grid.Row="4" Background="#e0f5ee" CornerRadius="3">
-                <!-- Create Order Button -->
+                <!-- Place Order Button -->
                 <Button Style="{StaticResource addButton}"
-                    Content="Place Order"
-                    Command="{Binding CreateOrderCommand}"
-                    Padding="5"
-                    Height="40"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"/>
+                        Content="Place Order"
+                        FontSize="18"
+                        FontWeight="Regular"
+                        Command="{Binding CreateOrderCommand}"
+                        Padding="5"
+                        Height="40"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"/>
             </Border>
         </Grid>
     </Grid>

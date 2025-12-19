@@ -42,11 +42,12 @@
                              Height="30"/>
                 </StackPanel>
 
+                <!-- list of orders -->
                 <DataGrid Grid.Row="2" RowStyle="{DynamicResource DataGridRowStyle1}" 
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
-                              ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding OrdersCollectionView, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedOrder, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Stretch">
                     <DataGrid.Columns>

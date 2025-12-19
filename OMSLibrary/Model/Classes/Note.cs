@@ -1,26 +1,31 @@
-﻿
-
-namespace OrderManagerLibrary.Model.Classes;
+﻿namespace OrderManagerLibrary.Model.Classes;
 /// <summary>
-/// Represents an internal note related to a specific order,
-/// used to store comments, special instructions or customer requests.
+/// Represents a note related to an order.
+/// Used to save comments, special instructions or customer requests.
 /// </summary>
 public class Note
 {
+    /// <summary>
+    /// Represents a unique Id for each Note
+    /// </summary>
     public int Id { get; set; }
+    /// <summary>
+    /// Represents the content of the note
+    /// </summary>
     public string Content { get; set; }
 
-
     /// <summary>
-    /// Constructor used when loading an existing Note from the database as a foreign constraint.
+    /// Constructor used for adding a 
+    /// new order when Id is not known. 
     /// </summary>
-    public Note(int id)
+    public Note(string content)
     {
-        Id = id;
+        Content = content;
     }
 
     /// <summary>
-    /// Constructor used when loading an existing Note from the database.
+    /// Constructor used when creating an instance 
+    /// from the datasource and the Id is known. 
     /// </summary>
     public Note(int noteId, string content)
     {
@@ -29,11 +34,11 @@ public class Note
     }
 
     /// <summary>
-    /// Constructor used when creating a new Note to be saved to the database.
-    /// Id is assigned by database. 
+    /// Constructor used when creating an instance
+    /// from the datasource and the order is a foreign key
     /// </summary>
-    public Note(string content)
+    public Note(int id)
     {
-        Content = content;
+        Id = id;
     }
 }

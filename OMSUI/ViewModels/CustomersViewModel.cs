@@ -42,15 +42,15 @@ public class CustomersViewModel : ViewModelBase
         set { _phoneNumber = value; OnPropertyChanged(); }
     }
 
-    private string _searchTerm;
+    private string searchTerm = string.Empty;
     public string SearchTerm
     {
-        get => _searchTerm;
+        get { return searchTerm; }
         set
         {
-            _searchTerm = value;
-            OnPropertyChanged(nameof(SearchTerm));
-            FilterCustomers();
+            searchTerm = value;
+            OnPropertyChanged(nameof(CustomerFilter));
+            CustomerCollectionView.Refresh();
         }
     }
 
@@ -63,6 +63,7 @@ public class CustomersViewModel : ViewModelBase
         _customerService = customerService;
         _customers = new ObservableCollection<Customer>(_customerService.GetAllCustomers());
         CustomerCollectionView = CollectionViewSource.GetDefaultView(_customers);
+        CustomerCollectionView.Filter = CustomerFilter;
 
         CreateCustomerCommand = new RelayCommand(execute => CreateCustomer(), canExecute => CanCreateCustomer());
         UpdateCustomerCommand = new RelayCommand(execute => UpdateCustomer(), canExecute => CanUpdateCustomer());
@@ -120,21 +121,15 @@ public class CustomersViewModel : ViewModelBase
         }
     }
 
-    private void FilterCustomers()
+    private bool CustomerFilter(object obj)
     {
-        if (!string.IsNullOrWhiteSpace(SearchTerm))
+        if (obj is Customer customer)
         {
-            CustomerCollectionView.Filter = c =>
-            {
-                if (c is Customer customer)
-                {
-                    return customer.FirstName.Contains(SearchTerm) ||
-                           customer.LastName.Contains(SearchTerm) ||
-                           customer.PhoneNumber.Contains(SearchTerm);
-                }
-
-                return false;
-            };
+            return customer.FirstName.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                   customer.LastName.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                   customer.PhoneNumber.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                   customer.Id.ToString().Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase);
         }
+        return false;
     }
 }
