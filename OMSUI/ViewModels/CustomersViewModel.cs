@@ -104,8 +104,10 @@ public class CustomersViewModel : ViewModelBase
         if (rowData != null)
         {
             var customer = rowData as Customer;
-            MessageBoxResult result = MessageBox.Show($"Do you want to remove {customer.FirstName} {customer.LastName}?",
-                                      "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show($"Confirm deletion of {customer.FirstName} {customer.LastName}\n" +
+                                                      $"Customer record will be deleted permenantly \n" +
+                                                      $"Related orders will NOT be affected",
+                                                      "OrderManager", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {

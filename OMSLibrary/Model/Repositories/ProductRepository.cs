@@ -25,6 +25,7 @@ public class ProductRepository : IRepository<Product>
             command.Parameters.AddWithValue("@Name", entity.Name);
             command.Parameters.AddWithValue("@Description", entity.Description);
             command.Parameters.AddWithValue("@Price", entity.Price);
+            command.Parameters.AddWithValue("@IsArchived", entity.IsArchived);
             command.Parameters.Add(outputParam);
 
             connection.Open();
@@ -43,6 +44,7 @@ public class ProductRepository : IRepository<Product>
             command.Parameters.AddWithValue("@Name", entity.Name);
             command.Parameters.AddWithValue("@Description", entity.Description);
             command.Parameters.AddWithValue("@Price", entity.Price);
+            command.Parameters.AddWithValue("@IsArchived", entity.IsArchived);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -78,7 +80,8 @@ public class ProductRepository : IRepository<Product>
                     ((int)reader["Id"],
                     (string)reader["Name"],
                     (string)reader["Description"],
-                    (decimal)reader["Price"]);
+                    (decimal)reader["Price"],
+                    (bool)reader["IsArchived"]);
             }
             return product;
         }
@@ -99,7 +102,8 @@ public class ProductRepository : IRepository<Product>
                     ((int)reader["Id"],
                     (string)reader["Name"],
                     (string)reader["Description"],
-                    (decimal)reader["Price"]));
+                    (decimal)reader["Price"],
+                    (bool)reader["IsArchived"]));
             }
             return products;
         }

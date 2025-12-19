@@ -96,7 +96,7 @@ public class ProductsViewModel : ViewModelBase
     public ProductsViewModel(IProductService productService)
     {
         _productService = productService;
-        _products = new ObservableCollection<Product>(_productService.GetAllProducts());
+        _products = new ObservableCollection<Product>(_productService.GetAllProducts().Where(p => !p.IsArchived));
         ProductsCollectionView = CollectionViewSource.GetDefaultView(_products);
         ProductsCollectionView.Filter = FilterProducts;
         AvailableSizes = new ObservableCollection<Size>(_productService.GetAllSizes());
@@ -150,7 +150,7 @@ public class ProductsViewModel : ViewModelBase
 
     private void CreateProduct()
     {
-        var product = new Product(Name, Description, Price, [.. SizeOptions], [.. TasteOptions]);
+        var product = new Product(Name, Description, Price, false, [.. SizeOptions], [.. TasteOptions]);
         _productService.CreateProduct(product);
         _products.Add(product);
         MessageBox.Show($"You have succesfully created {product.Name}.");
@@ -188,12 +188,13 @@ public class ProductsViewModel : ViewModelBase
         if (rowData != null)
         {
             var product = rowData as Product;
-            MessageBoxResult result = MessageBox.Show($"Do you want to remove {product.Name}?",
-                                      "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show($"Do you want to archive {product.Name}?",
+                                      "OrderManager", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                _productService.RemoveProduct(product.Id);
+                product.IsArchived = true;
+                _productService.UpdateProduct(product);
                 _products.Remove(product);
 
                 MessageBox.Show($"{product.Name} is removed.", "OrderManager",

@@ -148,7 +148,7 @@ public class NewOrderViewModel : ViewModelBase
                              IPaymentService paymentService,  INavigationService navigationService)
     {
         _orderservice = orderService;
-        _products = new ObservableCollection<Product>(productService.GetAllProducts());
+        _products = new ObservableCollection<Product>(productService.GetAllProducts().Where(p => !p.IsArchived));
         _customers = new ObservableCollection<Customer>(customerService.GetAllCustomers());
         _paymentMethods = new ObservableCollection<PaymentMethod>(paymentService.GetPaymentMethods());
         ProductsCollectionView = CollectionViewSource.GetDefaultView(_products);
@@ -164,15 +164,19 @@ public class NewOrderViewModel : ViewModelBase
         NavigateToNewOrderDetailsViewCommand = new RelayCommand(
             execute => { Navigation.NavigateToNested<NewOrderDetailsViewModel>(); }, canExecute => true);
 
-        CreateOrderCommand = new RelayCommand(execute => AddNewOrder(), canExecute => CanAddNewOrder());
+        CreateOrderCommand = new RelayCommand(execute => CreateOrder(), canExecute => CanAddNewOrder());
         AddPaymentCommand = new RelayCommand(execute => AddPaymentToOrder(), canExecute => CanAddPaymentToOrder());
-        AddProductToOrderCommand = new RelayCommand((param) => AddProductToOrder(param), canExecute => true);
+        AddProductToOrderCommand = new RelayCommand
+            ((param) => AddProductToOrder(param), canExecute => true);
+
+
+
         IncreaseQuantityCommand = new RelayCommand((param) => IncreaseQuantity(param), canExecute => true);
         DecreaseQuantityCommand = new RelayCommand((param) => DecreaseQuantity(param), canExecute => true);
         AddDiscountCommand = new RelayCommand((param) => AddDiscountToOrderLine(param), canExecute => true);
     }
 
-    private void AddNewOrder()
+    private void CreateOrder()
     {
         PickUp pickUp = new PickUp(PickUpDateTime, IsDelivery, Location);
         Note note = new Note(NoteContent);
@@ -180,7 +184,7 @@ public class NewOrderViewModel : ViewModelBase
         newOrder.Status = SetOrderStatus();
         
         MessageBoxResult result = MessageBox.Show($"Please confirm order for {SelectedCustomer.FirstName} {SelectedCustomer.LastName}" +
-                                                  $"\nPickUp: {PickUpDateTime.Date} {PickUpTime}" +
+                                                  $"\nPickUp: {PickUpTime.ToLongDateString()}" +
                                                   $"\nLocation: {Location}" +
                                                   $"\nOutstanding: ${OutstandingAmount} ",
                                                   "OrderManager", MessageBoxButton.YesNo, MessageBoxImage.Question);

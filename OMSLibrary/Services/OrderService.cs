@@ -35,7 +35,7 @@ public class OrderService : IOrderService
 
         foreach (var order in orders)
         {
-            order.Customer = _customerRepository.GetById(order.Customer.Id);
+            order.Customer = (order.Customer != null) ? _customerRepository.GetById(order.Customer.Id) : new Customer("Deleted", "", "");
             order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
             order.Note = _noteRepository.GetById(order.Note.Id);
             order.OrderLines = [.. _orderLineService.GetAllOrderLinesByOrder(order)];
@@ -61,7 +61,7 @@ public class OrderService : IOrderService
         var upcomingOrders = (_orderRepository as OrderRepository).GetUpcomingOrders();
         foreach (var order in upcomingOrders)
         {
-            order.Customer = _customerRepository.GetById(order.Customer.Id);
+            order.Customer = (order.Customer != null) ? _customerRepository.GetById(order.Customer.Id) : new Customer("Deleted", "", "");
             order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
         }
         return upcomingOrders;
@@ -71,7 +71,7 @@ public class OrderService : IOrderService
         var pendingPaymentOrders = (_orderRepository as OrderRepository).GetPendingPaymentOrders();
         foreach (var order in pendingPaymentOrders)
         {
-            order.Customer = _customerRepository.GetById(order.Customer.Id);
+            order.Customer = (order.Customer != null) ? _customerRepository.GetById(order.Customer.Id) : new Customer("Deleted", "", "");
             order.PickUp = _pickUpRepository.GetById(order.PickUp.Id);
         }
         return pendingPaymentOrders;

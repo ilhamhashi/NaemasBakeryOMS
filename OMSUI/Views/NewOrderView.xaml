@@ -73,10 +73,12 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Background="Transparent" BorderThickness="0"
-                                        Style="{DynamicResource gridAddButton}"
-                                        Command="{Binding DataContext.AddProductToOrderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding}">
-                                        <Icon:PackIconMaterial Kind="PlusCircleOutline" Foreground="#222528"/>
+                                            Style="{StaticResource gridAddButton}"
+                                            Command="{Binding DataContext.AddProductToOrderCommand, 
+                                            RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}">
+                                        <Icon:PackIconMaterial Kind="PlusCircleOutline" 
+                                                               Foreground="#222528"/>
                                     </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

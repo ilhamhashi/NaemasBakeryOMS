@@ -10,7 +10,7 @@
         +int Id
         +DateTime Date
         +OrderStatus Status
-        +Customer Customer
+        +Customer? Customer
         +PickUp PickUp
         +Note Note
         +List~OrderLine~ OrderLines
@@ -47,7 +47,8 @@
         +string Name
         +string Description
         +decimal Price
-        +Size size
+        +bool IsArchived
+        +Size Size
         +Taste Taste
         +List~Size~ SizeOptions
         +List~Taste~ TasteOptions

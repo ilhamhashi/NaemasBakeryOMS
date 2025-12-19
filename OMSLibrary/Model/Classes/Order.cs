@@ -9,7 +9,7 @@ public class Order
     public int Id { get; set; }
     public DateTime Date { get; set; }
     public OrderStatus Status { get; set; }    
-    public Customer Customer { get; set; }
+    public Customer? Customer { get; set; }
     public PickUp PickUp { get; set; }
     public Note Note { get; set; }
     public List<OrderLine> OrderLines { get; set; }
@@ -37,7 +37,7 @@ public class Order
         Customer.LastName = lastName;
     }
 
-    public Order(int id, DateTime orderDate, OrderStatus status, Customer customer, PickUp pickUp, Note note)
+    public Order(int id, DateTime orderDate, OrderStatus status, Customer? customer, PickUp pickUp, Note note)
     {
         Id = id;
         Date = orderDate;

@@ -106,7 +106,7 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    new Customer((int)reader["CustomerId"]),
+                    Convert.IsDBNull(reader["CustomerId"]) ? null : new Customer((int)reader["CustomerId"]),
                     new PickUp((int)reader["PickUpId"]),
                     new Note((int)reader["NoteId"])
                 ));
@@ -132,7 +132,7 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    new Customer((int)reader["CustomerId"]),
+                    Convert.IsDBNull(reader["CustomerId"]) ? null : new Customer((int)reader["CustomerId"]),
                     new PickUp((int)reader["PickUpId"]),
                     new Note((int)reader["NoteId"])
                 ));
@@ -157,7 +157,7 @@ public class OrderRepository : IRepository<Order>
                     (int)reader["Id"],
                     (DateTime)reader["Date"],
                     (OrderStatus)Enum.Parse(typeof(OrderStatus), (string)reader["Status"]),
-                    new Customer((int)reader["CustomerId"]),
+                    Convert.IsDBNull(reader["CustomerId"]) ? null : new Customer((int)reader["CustomerId"]),
                     new PickUp((int)reader["PickUpId"]),
                     new Note((int)reader["NoteId"])
                 ));
